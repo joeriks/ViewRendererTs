@@ -13,7 +13,7 @@ The components are tied together with a ViewRenderer class (25 lines of code). I
 ## Small dependencies
 So the the ViewRenderer is the only code that is my own here. Other than that I use jQuery and the minimalistic Html-builder Dom-O in my sample to get a really nice DOM-experience. 
 
-Dom-O by jed is the thing that got me inspired to write this, and what really makes this useful since it's so easy to write the views.
+Dom-O by jed is the thing that got me inspired to write this, and what really makes this interesting since it's possible to write dynamic views in good looking and pure ts/js with it. Yep, no external templating whatsoever.
 
 ## Structure
 To get structure in the application, the components can for example be spread across different files (asp net mvc style) or bound together in TypeScript modules. In the sample I use the latter approach.
