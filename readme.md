@@ -60,5 +60,12 @@ The personModule adds a controller (controllerbindings), to handle some user int
 
 In app.ts I render my two views. Here's how the rendering of the master view looks like:
 
+    // setup masterview to use body as container
     masterModule.masterViewRenderer.$el = $("body");
-    masterModule.masterViewRenderer.render()
+    masterModule.masterViewRenderer.render();
+
+    // setup personview to use #personView as container
+    personModule.personViewRenderer.$el = $("#personView");
+    personModule.personViewRenderer.render();
+
+Note that the class instantiations take place inside the modules, and in the main module (app.ts) I just tell my existing views where they are going to be rendered. That is of course a matter of preference.
