@@ -44,7 +44,7 @@ The masterModule looks like this and shows how the the Module and the View are b
 
 	}
 
-The personModule adds a controller (controllerbindings), to handle some user interaction:
+The personModule has a view and a model and also adds a controller (controllerbindings), to handle some user interaction:
 
     var personControllerBindings = (model: PersonModel, viewRenderer:ViewRenderer) => {
 
