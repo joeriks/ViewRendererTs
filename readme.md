@@ -33,12 +33,13 @@ The masterModule looks like this and shows how the the Module and the View are b
 		masterModel.subViewName = "personView";
 
 
-                // here's how the view syntax look like with "Dom-o", build html with functions
+		// here's how the view syntax look like with "Dom-o", build html with functions
 		var masterView = (model: MasterModel) =>
-				DIV(
+			DIV(
 				H1("Sample MVC"),
 				P("Rendered at time : " + new Date()),
-				DIV({ id: model.subViewName }));
+				DIV({ id: model.subViewName })
+			);
 
 		export var masterViewRenderer = new ViewRenderer(masterView, masterModel);
 
