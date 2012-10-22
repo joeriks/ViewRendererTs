@@ -8,10 +8,10 @@ Not really. This is a _very simple_ approach building client side functionality 
 * The view : a function that returns html.
 * The controller : a controllerbindings-function that adds bindings to the DOM. Can be router events, pubsub publishs, clicks or whatever you like.
 
-## Contents
-The components are tied together with a ViewRenderer class. Which takes the components as parameters and has a render function which renders the view on a given jQuery element.
+The components are tied together with a ViewRenderer class (25 lines of code). It takes the mentioned components as parameters and has a render function which renders the view on a given jQuery element.
 
-The ViewRenderer is the only code that is my own here. And it is about 25 lines. Other than that I use jQuery and the minimalistic Html-builder Dom-O in my sample to get a really nice DOM-experience. 
+## Small dependencies
+So the the ViewRenderer is the only code that is my own here. Other than that I use jQuery and the minimalistic Html-builder Dom-O in my sample to get a really nice DOM-experience. 
 
 Dom-O by jed is the thing that got me inspired to write this, and what really makes this useful since it's so easy to write the views.
 
