@@ -1,22 +1,24 @@
-﻿ViewRenderer.ts - an MVC approach with TypeScript
+#ViewRenderer.ts - an MVC approach with TypeScript
 
 "I was inspired by the many good javascript frameworks out there so I made my own".
 
-Not really. This is a simple approach building MVC style with typescript. It boils down to the three MVC components:
+Not really. This is a _very simple_ approach building client side functionality MVC style with typescript. It boils down to the three MVC components:
 
-The model : a TypeScript class or a plain javascript model.
+* The model : a TypeScript class or a plain javascript model.
+* The view : a function that returns html.
+* The controller : a controllerbindings-function that adds bindings to the DOM. Can be router events, pubsub publishs, clicks or whatever you like.
 
-The view : a function that returns html.
+The components are tied together with a ViewRenderer class. Which takes the components as parameters and has a render function which renders the view on a given jQuery element.
 
-The controller : a controllerbindings-function that adds bindings to the DOM. Can be router events, pubsub publishs, clicks or whatever you like.
+The ViewRenderer is the only code that is my own here. And it is about 25 lines of code. The ViewRenderer is not 
+dependent on it, but the thing that got me inspired to write this, and what really makes this useful is the nice 
+and minimalistic Dom-o Html helper by jed, which I use in the sample to create my markup (my views).
 
-The components are tied together with a ViewRenderer. Which takes the components as parameters and has a render function which renders the view on a given jQuery element.
+To get structure in the application, the components can for example be spread across different files (asp net mvc style) or bound together in TypeScript modules.
 
-To get structure in the application, the compnents can for example be spread across different files (asp net mvc style) or bound together in TypeScript modules.
+In the simple sample they are in two modules, "masterModule2 and "personModule".
 
-In the simple sample they are in two modules, the masterModule and the personModule.
-
-Here's what the main function looks like in app.ts:
+In app.ts I render my two views, here's how the rendering of the master view looks like:
 
 masterModule.masterViewRenderer.$el = $("body");
 masterModule.masterViewRenderer.render()
@@ -32,6 +34,8 @@ The masterModule looks like this:
 		var masterModel = new MasterModel();
 		masterModel.subViewName = "personView";
 
+
+                // here's how the view syntax look like with "Dom-o", build html with functions
 		var masterView = (model: MasterModel) =>
 				DIV(
 				H1("Sample MVC"),
@@ -42,7 +46,7 @@ The masterModule looks like this:
 
 	}
 
-The personModule uses controllerBindings to create some user interaction:
+The personModule uses controllerBindings to handle some user interaction:
 
     var personControllerBindings = (model: PersonModel, viewRenderer:ViewRenderer) => {
 
@@ -54,4 +58,3 @@ The personModule uses controllerBindings to create some user interaction:
     };
 
 
-In the sample I use the nice and minimalistic Dom-o Html helper by jed to create the markup.
