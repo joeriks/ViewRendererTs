@@ -8,20 +8,19 @@ Not really. This is a _very simple_ approach building client side functionality 
 * The view : a function that returns html.
 * The controller : a controllerbindings-function that adds bindings to the DOM. Can be router events, pubsub publishs, clicks or whatever you like.
 
+## Contents
 The components are tied together with a ViewRenderer class. Which takes the components as parameters and has a render function which renders the view on a given jQuery element.
 
-The ViewRenderer is the only code that is my own here. And it is about 25 lines of code. The ViewRenderer is not 
-dependent on it, but the thing that got me inspired to write this, and what really makes this useful is the nice 
-and minimalistic Dom-o Html helper by jed, which I use in the sample to create my markup (my views).
+The ViewRenderer is the only code that is my own here. And it is about 25 lines. Other than that I use jQuery and Dom-O in my sample to get a really nice DOM-experience. 
 
+The minimalistic Html-builder Dom-O by jed is the thing that got me inspired to write this, and what really makes this useful since it's so easy to write the views.
+
+## Structure
 To get structure in the application, the components can for example be spread across different files (asp net mvc style) or bound together in TypeScript modules.
 
-In the simple sample they are in two modules, "masterModule2 and "personModule".
 
-In app.ts I render my two views, here's how the rendering of the master view looks like:
-
-masterModule.masterViewRenderer.$el = $("body");
-masterModule.masterViewRenderer.render()
+## The sample
+In the simple sample I've got two modules, "masterModule" and "personModule".
 
 The masterModule looks like this:
 
@@ -57,4 +56,7 @@ The personModule uses controllerBindings to handle some user interaction:
         });
     };
 
+In app.ts I render my two views. Here's how the rendering of the master view looks like:
 
+    masterModule.masterViewRenderer.$el = $("body");
+    masterModule.masterViewRenderer.render()
