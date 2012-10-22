@@ -2,6 +2,8 @@
 
 module personModule {
 
+    // the person model
+
     class PersonModel {
         firstName: string;
         secondName: string;
@@ -16,6 +18,9 @@ module personModule {
 
     var personModel = new PersonModel();
     
+
+    // person view specific controls
+
     var inputControl = (label: string, id: string, value: () => string) =>
 
         DIV(
@@ -27,14 +32,21 @@ module personModule {
 
         (value() != " ") ? P(STRONG("Hello : " + value())) : "";
 
+    
+    // the person view
+    
     var personView = (model: PersonModel) =>
 
         DIV(
+            commonViewControls.viewHeader("Person View"),
             DIV(
                 inputControl("First name", "firstname", () =>model.firstName),
                 inputControl("Second name", "secondname", () =>model.secondName),
                 BUTTON({ id: "button1" },"Update")),           
                 greeterControl(() =>model.fullName()));
+
+
+    // the controller bindings
 
     var personControllerBindings = (model: PersonModel, viewRenderer: ViewRenderer) => {
 
@@ -44,6 +56,7 @@ module personModule {
             viewRenderer.render();
         });
     };
+
     export var personViewRenderer = new ViewRenderer(personView, personModel, personControllerBindings);
 
 }

@@ -1,6 +1,7 @@
 /// <reference path="ref.ts"/>
 var personModule;
 (function (personModule) {
+    // the person model
     var PersonModel = (function () {
         function PersonModel() {
             this.firstName = "";
@@ -12,6 +13,7 @@ var personModule;
         return PersonModel;
     })();    
     var personModel = new PersonModel();
+    // person view specific controls
     var inputControl = function (label, id, value) {
         return DIV(LABEL(label + ": "), INPUT({
             id: id,
@@ -21,8 +23,9 @@ var personModule;
     var greeterControl = function (value) {
         return (value() != " ") ? P(STRONG("Hello : " + value())) : "";
     };
+    // the person view
     var personView = function (model) {
-        return DIV(DIV(inputControl("First name", "firstname", function () {
+        return DIV(commonViewControls.viewHeader("Person View"), DIV(inputControl("First name", "firstname", function () {
             return model.firstName;
         }), inputControl("Second name", "secondname", function () {
             return model.secondName;
@@ -32,6 +35,7 @@ var personModule;
             return model.fullName();
         }));
     };
+    // the controller bindings
     var personControllerBindings = function (model, viewRenderer) {
         $("#button1").on("click", function () {
             model.firstName = $("#firstname").val();

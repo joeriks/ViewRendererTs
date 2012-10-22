@@ -12,6 +12,7 @@ module masterModule {
     var masterView = (model: MasterModel) =>
             DIV(
             H1("Sample MVC"),
+            commonViewControls.viewHeader("Master View"),
             P("Rendered at time : " + new Date()),
             DIV({ id: model.subViewName }));
 

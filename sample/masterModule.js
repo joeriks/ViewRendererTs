@@ -8,7 +8,7 @@ var masterModule;
     var masterModel = new MasterModel();
     masterModel.subViewName = "personView";
     var masterView = function (model) {
-        return DIV(H1("Sample MVC"), P("Rendered at time : " + new Date()), DIV({
+        return DIV(H1("Sample MVC"), commonViewControls.viewHeader("Master View"), P("Rendered at time : " + new Date()), DIV({
             id: model.subViewName
         }));
     };
