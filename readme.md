@@ -82,3 +82,19 @@ And the personView renders the input boxes as well as the full name to the view:
         STRONG("Hello : " +
         model.fullName()))
     );
+
+
+##A helper to build the input control
+Since we have two similar input "controls" we like to put their code inside a function. Here's how:
+
+	var inputControl = (label: string, id: string, value:()=> string) =>
+		DIV(LABEL(label + ": "),
+		INPUT({ id: id, value: value() }),
+		BR());
+
+Which means our view can be written as:
+
+    var personView = (model: PersonModel) =>
+        DIV(
+            inputControl("First name", "firstname", () =>model.firstName),
+            inputControl("Second name", "secondname", () =>model.secondName),

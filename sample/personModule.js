@@ -11,14 +11,18 @@ var personModule;
     var personModel = new PersonModel();
     personModel.firstName = "Foo";
     personModel.secondName = "Bar";
+    var inputControl = function (label, id, value) {
+        return DIV(LABEL(label + ": "), INPUT({
+            id: id,
+            value: value()
+        }), BR());
+    };
     var personView = function (model) {
-        return DIV(LABEL("First name: "), INPUT({
-            id: "firstname",
-            value: model.firstName
-        }), BR(), LABEL("Second name: "), INPUT({
-            id: "secondname",
-            value: model.secondName
-        }), BR(), BUTTON({
+        return DIV(inputControl("First name", "firstname", function () {
+            return model.firstName;
+        }), inputControl("Second name", "secondname", function () {
+            return model.secondName;
+        }), BUTTON({
             id: "button1"
         }), BR(), P(STRONG("Hello : " + model.fullName())));
     };
