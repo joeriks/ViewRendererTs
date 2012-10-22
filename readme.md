@@ -44,6 +44,14 @@ The masterModule looks like this and shows how the the Module and the View are b
 
 	}
 
+Next step is to render the view to an element. I do that in my application module:
+
+    // setup masterview to use body as container
+    masterModule.masterViewRenderer.$el = $("body");
+    masterModule.masterViewRenderer.render();
+
+Note that the class instantiations take place inside the modules, and in the main module (app.ts) I just tell my existing views where they are going to be rendered. That is of course a matter of preference.
+
 The personModule has a view and a model and also adds a controller (controllerbindings), to handle some user interaction:
 
     var personControllerBindings = (model: PersonModel, viewRenderer:ViewRenderer) => {
@@ -58,14 +66,3 @@ The personModule has a view and a model and also adds a controller (controllerbi
     export var personViewRenderer = new ViewRenderer(personView, personModel, personControllerBindings);
 
 
-In app.ts I render my two views. Here's how the rendering of the master view looks like:
-
-    // setup masterview to use body as container
-    masterModule.masterViewRenderer.$el = $("body");
-    masterModule.masterViewRenderer.render();
-
-    // setup personview to use #personView as container
-    personModule.personViewRenderer.$el = $("#personView");
-    personModule.personViewRenderer.render();
-
-Note that the class instantiations take place inside the modules, and in the main module (app.ts) I just tell my existing views where they are going to be rendered. That is of course a matter of preference.
