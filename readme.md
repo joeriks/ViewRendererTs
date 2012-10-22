@@ -11,18 +11,17 @@ Not really. This is a _very simple_ approach building client side functionality 
 ## Contents
 The components are tied together with a ViewRenderer class. Which takes the components as parameters and has a render function which renders the view on a given jQuery element.
 
-The ViewRenderer is the only code that is my own here. And it is about 25 lines. Other than that I use jQuery and Dom-O in my sample to get a really nice DOM-experience. 
+The ViewRenderer is the only code that is my own here. And it is about 25 lines. Other than that I use jQuery and the minimalistic Html-builder Dom-O in my sample to get a really nice DOM-experience. 
 
-The minimalistic Html-builder Dom-O by jed is the thing that got me inspired to write this, and what really makes this useful since it's so easy to write the views.
+Dom-O by jed is the thing that got me inspired to write this, and what really makes this useful since it's so easy to write the views.
 
 ## Structure
-To get structure in the application, the components can for example be spread across different files (asp net mvc style) or bound together in TypeScript modules.
-
+To get structure in the application, the components can for example be spread across different files (asp net mvc style) or bound together in TypeScript modules. In the sample I use the latter approach.
 
 ## The sample
 In the simple sample I've got two modules, "masterModule" and "personModule".
 
-The masterModule looks like this:
+The masterModule looks like this and shows how the the Module and the View are bound together with a viewrenderer:
 
 	module masterModule {
 
@@ -45,7 +44,7 @@ The masterModule looks like this:
 
 	}
 
-The personModule uses controllerBindings to handle some user interaction:
+The personModule adds a controller (controllerbindings), to handle some user interaction:
 
     var personControllerBindings = (model: PersonModel, viewRenderer:ViewRenderer) => {
 
@@ -55,6 +54,9 @@ The personModule uses controllerBindings to handle some user interaction:
             viewRenderer.render();
         });
     };
+
+    export var personViewRenderer = new ViewRenderer(personView, personModel, personControllerBindings);
+
 
 In app.ts I render my two views. Here's how the rendering of the master view looks like:
 
