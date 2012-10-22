@@ -14,21 +14,22 @@ module personModule {
     personModel.firstName = "Foo";
     personModel.secondName = "Bar";
 
-    var inputControl = (label: string, id: string, value:()=> string) =>
+    var inputControl = (label: string, id: string, value: () => string) =>
 
-        DIV(LABEL(label + ": "),
-        INPUT({ id: id, value: value() }),
-        BR());
+        DIV(
+            LABEL(label + ": "),
+            INPUT({ id: id, value: value() }))
 
     var personView = (model: PersonModel) =>
+
         DIV(
-            inputControl("First name", "firstname", () =>model.firstName),
-            inputControl("Second name", "secondname", () =>model.secondName),
-            BUTTON({ id: "button1" }),
-            BR(),
-            P(
-                STRONG("Hello : " +
-                model.fullName()))
+            DIV(
+                inputControl("First name", "firstname", () =>model.firstName),
+                inputControl("Second name", "secondname", () =>model.secondName),
+                BUTTON({ id: "button1" },"Update")),            
+                P(
+                    STRONG("Hello : " +
+                    model.fullName()))
             );
 
     var personControllerBindings = (model: PersonModel, viewRenderer: ViewRenderer) => {

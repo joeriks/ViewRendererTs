@@ -15,16 +15,16 @@ var personModule;
         return DIV(LABEL(label + ": "), INPUT({
             id: id,
             value: value()
-        }), BR());
+        }));
     };
     var personView = function (model) {
-        return DIV(inputControl("First name", "firstname", function () {
+        return DIV(DIV(inputControl("First name", "firstname", function () {
             return model.firstName;
         }), inputControl("Second name", "secondname", function () {
             return model.secondName;
         }), BUTTON({
             id: "button1"
-        }), BR(), P(STRONG("Hello : " + model.fullName())));
+        }, "Update")), P(STRONG("Hello : " + model.fullName())));
     };
     var personControllerBindings = function (model, viewRenderer) {
         $("#button1").on("click", function () {
