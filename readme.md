@@ -2,7 +2,7 @@
 
 "I was inspired by the many good javascript frameworks out there so I made my own".
 
-Not really. This is a _very simple_ approach building client side functionality MVC style with typescript. It boils down to the three MVC components:
+Not really. This is a _very simple_ playful & experimental approach building client side functionality MVC style with typescript. It boils down to the three MVC components:
 
 * The model : a TypeScript class or a plain javascript model.
 * The view : a function that returns html.
