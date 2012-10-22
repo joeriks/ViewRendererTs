@@ -66,6 +66,7 @@ The personModule has a view and a model and also adds a controller (controllerbi
     export var personViewRenderer = new ViewRenderer(personView, personModel, personControllerBindings);
 
 The fullName is a function within the module:
+
     class PersonModel {
         firstName: string;
         secondName: string;
@@ -75,6 +76,7 @@ The fullName is a function within the module:
     }
 
 And the personView renders the input boxes as well as the full name to the view:
+
     P(
         STRONG("Hello : " +
         model.fullName()))
