@@ -18,7 +18,14 @@ Dom-O by jed is the thing that got me inspired to write this, and what really ma
 ## Structure
 To get structure in the application, the components can for example be spread across different files (asp net mvc style) or bound together in TypeScript modules. In the sample I use the latter approach.
 
-## The sample
+## The samples
+
+Check out the samples previews:
+* [Simple views sample](http://htmlpreview.github.com/?https://github.com/joeriks/ViewRendererTs/blob/master/samples/simple-views/default.html)
+* [Multiple views sample](http://htmlpreview.github.com/?https://github.com/joeriks/ViewRendererTs/blob/master/samples/multi-views/default.html)
+
+### Simple views:
+
 In the simple sample I've got two modules, "masterModule" and "personModule".
 
 The masterModule looks like this and shows how the the Module and the View are bound together with a viewrenderer:
