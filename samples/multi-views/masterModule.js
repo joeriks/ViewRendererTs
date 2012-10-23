@@ -59,7 +59,7 @@ var masterModule;
             });
         });
         app.ws.bind('fooBar', function (message) {
-            $("#fromServer").html(message);
+            $("#fromServer").html(message.SimpleMessage);
         });
         // recreate subviews
         $.each(model.games, function (idx, game) {
