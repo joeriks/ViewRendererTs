@@ -3,12 +3,29 @@
 /// <reference path="app.ts"/>
 
 module masterModule {
+    function GUID() {
+        var S4 = function () {
+            return Math.floor(
+                    Math.random() * 0x10000 /* 65536 */
+                ).toString(16);
+        };
+
+        return (
+                S4() + S4() + "-" +
+                S4() + "-" +
+                S4() + "-" +
+                S4() + "-" +
+                S4() + S4() + S4()
+            );
+    }
 
     export class MasterModel {
         games: gameModule.GameRenderer[];
+        guid: string;
 
         constructor () {
             this.games = [];
+            this.guid = GUID();
         }
 
         totalResult() {
@@ -21,6 +38,7 @@ module masterModule {
                 totalWin = totalWin + elem.model.wonMoney;
             });
             return {
+                guid: this.guid,
                 totalSpent: totalSpent,
                 totalWin: totalWin,
                 totalGames: this.games.length
@@ -30,6 +48,8 @@ module masterModule {
 
     }
 
+    
+    
     var masterModel = new MasterModel();
 
     var viewHeader = (name: string) => H2(name);
@@ -79,11 +99,12 @@ module masterModule {
 
         amplify.subscribe("ticketResult", () => {
             refreshTotalResult(model);
-            app.ws.trigger('fooBar', {SimpleMessage:'Hello World'}); 
+            var result = model.totalResult();
+            app.ws.trigger('result', result);
         });
 
-        app.ws.bind('fooBar', function (message) {
-            $("#fromServer").html(message.SimpleMessage);
+        app.ws.bind('result', function (result) {
+            $("#fromServer").html(result.guid);
         });
 
         // recreate subviews

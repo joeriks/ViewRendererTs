@@ -3,9 +3,17 @@
 /// <reference path="app.ts"/>
 var masterModule;
 (function (masterModule) {
+    function GUID() {
+        var S4 = function () {
+            return Math.floor(Math.random() * 65536).toString(/* 65536 */
+            16);
+        };
+        return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+    }
     var MasterModel = (function () {
         function MasterModel() {
             this.games = [];
+            this.guid = GUID();
         }
         MasterModel.prototype.totalResult = function () {
             var totalSpent = 0;
@@ -15,6 +23,7 @@ var masterModule;
                 totalWin = totalWin + elem.model.wonMoney;
             });
             return {
+                guid: this.guid,
                 totalSpent: totalSpent,
                 totalWin: totalWin,
                 totalGames: this.games.length
@@ -54,12 +63,11 @@ var masterModule;
     var masterController = function (model, viewRenderer) {
         amplify.subscribe("ticketResult", function () {
             refreshTotalResult(model);
-            app.ws.trigger('fooBar', {
-                SimpleMessage: 'Hello World'
-            });
+            var result = model.totalResult();
+            app.ws.trigger('result', result);
         });
-        app.ws.bind('fooBar', function (message) {
-            $("#fromServer").html(message.SimpleMessage);
+        app.ws.bind('result', function (result) {
+            $("#fromServer").html(result.guid);
         });
         // recreate subviews
         $.each(model.games, function (idx, game) {
