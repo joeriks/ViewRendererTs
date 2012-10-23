@@ -1,9 +1,10 @@
 ﻿/// <reference path="ref.ts"/>
 /// <reference path="gameModule.ts"/>
+/// <reference path="app.ts"/>
 
 module masterModule {
 
-    class MasterModel {
+    export class MasterModel {
         games: gameModule.GameRenderer[];
 
         constructor () {
@@ -61,7 +62,8 @@ module masterModule {
                 viewHeader("Total Result"),
                 DIV(totalResult(model)),
                 BUTTON("Add game")
-                )
+                ),
+                DIV({ id: "fromServer" })
         );
 
 
@@ -77,6 +79,11 @@ module masterModule {
 
         amplify.subscribe("ticketResult", () => {
             refreshTotalResult(model);
+            app.ws.trigger('fooBar', {SimpleMessage:'Hello World'}); 
+        });
+
+        app.ws.bind('fooBar', function (message) {
+            $("#fromServer").html(message);
         });
 
         // recreate subviews

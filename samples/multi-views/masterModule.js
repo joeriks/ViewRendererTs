@@ -1,5 +1,6 @@
 /// <reference path="ref.ts"/>
 /// <reference path="gameModule.ts"/>
+/// <reference path="app.ts"/>
 var masterModule;
 (function (masterModule) {
     var MasterModel = (function () {
@@ -20,7 +21,8 @@ var masterModule;
             };
         };
         return MasterModel;
-    })();    
+    })();
+    masterModule.MasterModel = MasterModel;    
     var masterModel = new MasterModel();
     var viewHeader = function (name) {
         return H2(name);
@@ -42,7 +44,9 @@ var masterModule;
             id: "leftContent"
         }, viewHeader("Games")), DIV({
             id: "rightContent"
-        }, viewHeader("Total Result"), DIV(totalResult(model)), BUTTON("Add game")));
+        }, viewHeader("Total Result"), DIV(totalResult(model)), BUTTON("Add game")), DIV({
+            id: "fromServer"
+        }));
     };
     var refreshTotalResult = function (model) {
         $("#rightContent div:first").html(totalResult(model));
@@ -50,6 +54,12 @@ var masterModule;
     var masterController = function (model, viewRenderer) {
         amplify.subscribe("ticketResult", function () {
             refreshTotalResult(model);
+            app.ws.trigger('fooBar', {
+                SimpleMessage: 'Hello World'
+            });
+        });
+        app.ws.bind('fooBar', function (message) {
+            $("#fromServer").html(message);
         });
         // recreate subviews
         $.each(model.games, function (idx, game) {
