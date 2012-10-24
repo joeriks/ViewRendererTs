@@ -128,8 +128,13 @@ module masterModule {
         });
         amplify.subscribe("remote", (results: IgameResult[]) => {
             var html = "";
+            results.sort((a, b) =>{ return (a.totalWin - a.totalSpent) - (b.totalWin - b.totalSpent) });
             $.each(results, (idx, elem) =>{
-                html += "<p>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + "</p>";
+                if (elem.guid == model.guid) {
+                    html += "<p><strong>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + "</strong></p>";
+                } else {
+                    html += "<p>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + "</p>";
+                }
             });
             $("#remoteResults").html(html);
         });

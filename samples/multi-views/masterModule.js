@@ -91,8 +91,15 @@ var masterModule;
         });
         amplify.subscribe("remote", function (results) {
             var html = "";
+            results.sort(function (a, b) {
+                return (a.totalWin - a.totalSpent) - (b.totalWin - b.totalSpent);
+            });
             $.each(results, function (idx, elem) {
-                html += "<p>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + "</p>";
+                if(elem.guid == model.guid) {
+                    html += "<p><strong>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + "</strong></p>";
+                } else {
+                    html += "<p>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + "</p>";
+                }
             });
             $("#remoteResults").html(html);
         });
