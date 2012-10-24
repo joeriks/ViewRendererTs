@@ -1,12 +1,21 @@
 ﻿/// <reference path="ref.ts"/>
 module gameModule {
 
+    interface IWinMatrix {
+
+        fromTicketNumber: number;
+        totalTickets: number;
+        winAmount: number;
+
+    }
     export class GameModel {
 
         boughtTickets: number;
         wonMoney: number;
         lastTicketResult: string;
         lastTicketWin: number;
+        maxWin: number;
+        winMatrix: IWinMatrix[];
 
         ticketPrice: number;
         constructor (ticketPrice: number) {
@@ -16,21 +25,43 @@ module gameModule {
             this.ticketPrice = ticketPrice;
             this.lastTicketResult = "";
             this.lastTicketWin = 0;
+            this.maxWin = 0;
+            this.winMatrix = [{
+                fromTicketNumber: 9,
+                totalTickets: 1,
+                winAmount: 150
+            },
+            {
+                fromTicketNumber: 7,
+                totalTickets: 2,
+                winAmount: 50
+            }];
         }
 
         buyTicket() {
 
             this.boughtTickets += 1;
 
-            var random = Math.floor((Math.random() * 10) + 1);
+            var totalTickets = this.winMatrix[0].fromTicketNumber + this.winMatrix[0].totalTickets;
+            var random = Math.floor((Math.random() * totalTickets));
 
             var win = 0;
+            for (var idx in this.winMatrix) {
+                var elem = this.winMatrix[idx];
+                if (random >= elem.fromTicketNumber) {
 
-            if (random > 5) {
+                    win = elem.winAmount;
+                    break;
 
-                win = this.ticketPrice * 2;
+                }
+
+            }
+
+            if (win > 0) {
+
                 this.lastTicketResult = "Win " + win;
                 this.wonMoney += win;
+                if (win > this.maxWin) this.maxWin = win;
             }
             else {
 
@@ -70,6 +101,7 @@ module gameModule {
         gameBox(
         DIV(
             P("Spent money : ", SPAN(model.spentMoney()),
+            P("Max win : ", SPAN(model.maxWin)),
             P("Won money : ", SPAN(model.wonMoney)),
             P("Result : ", SPAN(model.result()),
             DIV(

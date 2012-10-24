@@ -18,30 +18,41 @@ module masterModule {
                 S4() + S4() + S4()
             );
     }
-
+    interface IgameResult {
+    
+        guid: string;
+        totalSpent: number;
+        totalWin: number;
+        totalGames: number;
+        maxWin: number;
+    
+    }
     export class MasterModel {
         games: gameModule.GameRenderer[];
         guid: string;
-
+        remoteGames: IgameResult[];
         constructor () {
             this.games = [];
             this.guid = GUID();
         }
 
-        totalResult() {
+        totalResult():IgameResult {
 
             var totalSpent = 0;
             var totalWin = 0;
+            var maxWin = 0;
 
             $.each(this.games, (idx, elem: gameModule.GameRenderer) =>{
                 totalSpent = totalSpent + elem.model.spentMoney();
                 totalWin = totalWin + elem.model.wonMoney;
+                if (elem.model.maxWin > maxWin) maxWin = elem.model.maxWin;
             });
             return {
                 guid: this.guid,
                 totalSpent: totalSpent,
                 totalWin: totalWin,
-                totalGames: this.games.length
+                totalGames: this.games.length,
+                maxWin: maxWin
             };
 
         }
@@ -61,6 +72,7 @@ module masterModule {
         return DIV(
             P("Total games: " + result.totalGames),
             P("Total spent: " + result.totalSpent),
+            P("Max win: " + result.maxWin),
             P("Total win: " + result.totalWin)
             )
     }
@@ -104,6 +116,7 @@ module masterModule {
         });
 
         app.ws.bind('result', function (result) {
+
             $("#fromServer").html(result.guid);
         });
 

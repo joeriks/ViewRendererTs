@@ -18,15 +18,20 @@ var masterModule;
         MasterModel.prototype.totalResult = function () {
             var totalSpent = 0;
             var totalWin = 0;
+            var maxWin = 0;
             $.each(this.games, function (idx, elem) {
                 totalSpent = totalSpent + elem.model.spentMoney();
                 totalWin = totalWin + elem.model.wonMoney;
+                if(elem.model.maxWin > maxWin) {
+                    maxWin = elem.model.maxWin;
+                }
             });
             return {
                 guid: this.guid,
                 totalSpent: totalSpent,
                 totalWin: totalWin,
-                totalGames: this.games.length
+                totalGames: this.games.length,
+                maxWin: maxWin
             };
         };
         return MasterModel;
@@ -38,7 +43,7 @@ var masterModule;
     };
     var totalResult = function (model) {
         var result = model.totalResult();
-        return DIV(P("Total games: " + result.totalGames), P("Total spent: " + result.totalSpent), P("Total win: " + result.totalWin));
+        return DIV(P("Total games: " + result.totalGames), P("Total spent: " + result.totalSpent), P("Max win: " + result.maxWin), P("Total win: " + result.totalWin));
     };
     var masterView = function (model) {
         return DIV(STYLE({
