@@ -92,9 +92,9 @@ module masterModule {
             DIV({ id: "rightContent" },
                 viewHeader("Total Result"),
                 DIV(totalResult(model)),
-                BUTTON("Add game"),                
+                BUTTON({ id: "addgame", style: "display:none;" }, "Add game"),
                 DIV({ id: "fromServer" }),
-                DIV({ id: "remoteResults" }, "Loading from server...")
+                DIV({ id: "remoteResults" }, "Communicating with server...")
                 )
 
         );
@@ -132,17 +132,22 @@ module masterModule {
             $.each(results, (idx, elem) =>{
                 var position = idx + 1;
                 if (elem.guid == model.guid) {
-                    html += "<p><strong>" + position + ". Result: " + (elem.totalWin - elem.totalSpent).toString() + " Spent: " + elem.totalSpent.toString() + " Won: " + elem.totalWin.toString() + "</strong></p>";
+                    html += "<p><strong>" + position + ". Result: " + (elem.totalWin - elem.totalSpent).toString() + " Spent: " + elem.totalSpent.toString() + " Won: " + elem.totalWin.toString() + " max win:" + elem.maxWin.toString() + "</strong></p>";
                 } else {
-                    html += "<p>" + position + ". Result: " + (elem.totalWin - elem.totalSpent).toString() + " Spent: " + elem.totalSpent.toString() + " Won: " + elem.totalWin.toString() + "</p>";
+                    html += "<p>" + position + ". Result: " + (elem.totalWin - elem.totalSpent).toString() + " Spent: " + elem.totalSpent.toString() + " Won: " + elem.totalWin.toString() + " max win:" + elem.maxWin.toString() + "</p>";
                 }
             });
             $("#remoteResults").html(html);
         });
 
         $(() =>
-            setTimeout(() =>
-                app.ws.trigger('Sink.Read', { model: 'result-triss' });
+            setTimeout(() => {
+
+                app.ws.trigger('Sink.Read', {
+            model: 'result-triss'
+        });
+                  $("#addgame").show();
+        }
             , 2000));
 
         amplify.subscribe("ticketResult", () => {

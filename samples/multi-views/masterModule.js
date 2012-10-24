@@ -68,11 +68,14 @@ var masterModule;
             id: "leftContent"
         }, viewHeader("Games")), DIV({
             id: "rightContent"
-        }, viewHeader("Total Result"), DIV(totalResult(model)), BUTTON("Add game"), DIV({
+        }, viewHeader("Total Result"), DIV(totalResult(model)), BUTTON({
+            id: "addgame",
+            style: "display:none;"
+        }, "Add game"), DIV({
             id: "fromServer"
         }), DIV({
             id: "remoteResults"
-        }, "Loading from server...")));
+        }, "Communicating with server...")));
     };
     var refreshTotalResult = function (model) {
         $("#rightContent div:first").html(totalResult(model));
@@ -101,18 +104,19 @@ var masterModule;
             $.each(results, function (idx, elem) {
                 var position = idx + 1;
                 if(elem.guid == model.guid) {
-                    html += "<p><strong>" + position + ". Result: " + (elem.totalWin - elem.totalSpent).toString() + " Spent: " + elem.totalSpent.toString() + " Won: " + elem.totalWin.toString() + "</strong></p>";
+                    html += "<p><strong>" + position + ". Result: " + (elem.totalWin - elem.totalSpent).toString() + " Spent: " + elem.totalSpent.toString() + " Won: " + elem.totalWin.toString() + " max win:" + elem.maxWin.toString() + "</strong></p>";
                 } else {
-                    html += "<p>" + position + ". Result: " + (elem.totalWin - elem.totalSpent).toString() + " Spent: " + elem.totalSpent.toString() + " Won: " + elem.totalWin.toString() + "</p>";
+                    html += "<p>" + position + ". Result: " + (elem.totalWin - elem.totalSpent).toString() + " Spent: " + elem.totalSpent.toString() + " Won: " + elem.totalWin.toString() + " max win:" + elem.maxWin.toString() + "</p>";
                 }
             });
             $("#remoteResults").html(html);
         });
         $(function () {
             return setTimeout(function () {
-                return app.ws.trigger('Sink.Read', {
+                app.ws.trigger('Sink.Read', {
                     model: 'result-triss'
                 });
+                $("#addgame").show();
             }, 2000);
         });
         amplify.subscribe("ticketResult", function () {
