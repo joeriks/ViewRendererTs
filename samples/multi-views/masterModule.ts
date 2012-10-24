@@ -142,7 +142,7 @@ module masterModule {
         $(() =>
             setTimeout(() =>
                 app.ws.trigger('Sink.Read', { model: 'result' });
-            , 300));
+            , 2000));
 
         amplify.subscribe("ticketResult", () => {
             refreshTotalResult(model);
