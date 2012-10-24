@@ -120,8 +120,8 @@ module masterModule {
                 });
 
             });
+            amplify.publish("remote", model.remoteGames);
         });
-
 
         app.ws.bind('Sink.Create', (createdElement) =>{
             model.guid = createdElement.Key;
@@ -131,19 +131,22 @@ module masterModule {
             results.sort((a, b) =>{ return (a.totalSpent - a.totalWin) - (b.totalSpent - b.totalWin) });
             $.each(results, (idx, elem) =>{
                 if (elem.guid == model.guid) {
-                    html += "<p><strong>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + " result: " + (elem.totalWin-elem.totalSpent).toString() + "</strong></p>";
+                    html += "<p><strong>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + " result: " + (elem.totalWin - elem.totalSpent).toString() + "</strong></p>";
                 } else {
-                    html += "<p>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + " result: " + (elem.totalWin-elem.totalSpent).toString() + "</p>";
+                    html += "<p>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + " result: " + (elem.totalWin - elem.totalSpent).toString() + "</p>";
                 }
             });
             $("#remoteResults").html(html);
         });
+
+        $(() =>
+            setTimeout(() =>
+                app.ws.trigger('Sink.Read', { model: 'result' });
+            , 300));
+
         amplify.subscribe("ticketResult", () => {
             refreshTotalResult(model);
             var result = model.totalResult();
-            if (model.remoteGames.length == 0) {
-                app.ws.trigger('Sink.Read', { model: 'result' });
-            }
             if (result.guid == null) {
                 app.ws.trigger('Sink.Create', { Type: 'result', JSON: result });
             } else {

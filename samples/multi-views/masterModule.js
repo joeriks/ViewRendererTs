@@ -85,6 +85,7 @@ var masterModule;
                     totalWin: element.JSON.totalWin
                 });
             });
+            amplify.publish("remote", model.remoteGames);
         });
         app.ws.bind('Sink.Create', function (createdElement) {
             model.guid = createdElement.Key;
@@ -103,14 +104,16 @@ var masterModule;
             });
             $("#remoteResults").html(html);
         });
+        $(function () {
+            return setTimeout(function () {
+                return app.ws.trigger('Sink.Read', {
+                    model: 'result'
+                });
+            }, 300);
+        });
         amplify.subscribe("ticketResult", function () {
             refreshTotalResult(model);
             var result = model.totalResult();
-            if(model.remoteGames.length == 0) {
-                app.ws.trigger('Sink.Read', {
-                    model: 'result'
-                });
-            }
             if(result.guid == null) {
                 app.ws.trigger('Sink.Create', {
                     Type: 'result',
