@@ -121,10 +121,11 @@ module masterModule {
             });
         });
 
-        app.ws.trigger('Sink.Read', { model: 'result' });
-
-        app.ws.bind('Sink.Create', (createdElement) =>{        
-            model.guid = createdElement.Key;        
+        $(() => {
+            app.ws.trigger('Sink.Read', { model: 'result' });
+        });
+        app.ws.bind('Sink.Create', (createdElement) =>{
+            model.guid = createdElement.Key;
         });
         amplify.subscribe("remote", (results: IgameResult[]) => {
             $("#remoteResults").html(results.length.toString());

@@ -84,8 +84,10 @@ var masterModule;
                 });
             });
         });
-        app.ws.trigger('Sink.Read', {
-            model: 'result'
+        $(function () {
+            app.ws.trigger('Sink.Read', {
+                model: 'result'
+            });
         });
         app.ws.bind('Sink.Create', function (createdElement) {
             model.guid = createdElement.Key;
