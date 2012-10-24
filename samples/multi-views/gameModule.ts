@@ -16,11 +16,13 @@ module gameModule {
         lastTicketWin: number;
         maxWin: number;
         winMatrix: IWinMatrix[];
+        autoBuyIntervalId: number;
 
         ticketPrice: number;
         constructor (ticketPrice: number) {
 
             this.boughtTickets = 0;
+            this.autoBuyIntervalId = null;
             this.wonMoney = 0;
             this.ticketPrice = ticketPrice;
             this.lastTicketResult = "";
@@ -118,21 +120,40 @@ module gameModule {
             P("Won money : ", SPAN(model.wonMoney)),
             P("Result : ", SPAN(model.result()),
             DIV(
-                BUTTON("Get me another lottery ticket"),
+                BUTTON("Get me another lottery ticket")),
+            DIV(
+            (model.autoBuyIntervalId != null) ?
+                INPUT({ type: "checkbox", checked: "checked" }) :
+                INPUT({ type: "checkbox" }),
+                LABEL("Auto buy")),
+            DIV(
                 SPAN(model.lastTicketResult)
-                )
+                ))
             )
-        )))
+        ))
 
     var gameController = (model: GameModel, viewRenderer: ViewRenderer) =>
+    {
+
+        viewRenderer.$el.find("input").on("change", (s) => {
+            if (s.target.checked) {
+                model.autoBuyIntervalId = setInterval(() => {
+                    model.buyTicket();
+                    viewRenderer.render();
+                }, 1000);
+            } else {
+                clearInterval(model.autoBuyIntervalId);
+                model.autoBuyIntervalId = null;
+            }
+        });
 
         viewRenderer.$el.find("button").on("click", () => {
 
             model.buyTicket();
             viewRenderer.render();
 
-    });
-
+        });
+    }
 
     export class GameRenderer extends ViewRenderer {
 

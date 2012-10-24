@@ -9,6 +9,7 @@ var gameModule;
     var GameModel = (function () {
         function GameModel(ticketPrice) {
             this.boughtTickets = 0;
+            this.autoBuyIntervalId = null;
             this.wonMoney = 0;
             this.ticketPrice = ticketPrice;
             this.lastTicketResult = "";
@@ -160,10 +161,26 @@ var gameModule;
         return DIV(H3("Another game"), contents);
     };
     var gameView = function (model) {
-        return gameBox(DIV(P("Spent money : ", SPAN(model.spentMoney()), P("Max win : ", SPAN(model.maxWin)), P("Won money : ", SPAN(model.wonMoney)), P("Result : ", SPAN(model.result()), DIV(BUTTON("Get me another lottery ticket"), SPAN(model.lastTicketResult))))));
+        return gameBox(DIV(P("Spent money : ", SPAN(model.spentMoney()), P("Max win : ", SPAN(model.maxWin)), P("Won money : ", SPAN(model.wonMoney)), P("Result : ", SPAN(model.result()), DIV(BUTTON("Get me another lottery ticket")), DIV((model.autoBuyIntervalId != null) ? INPUT({
+            type: "checkbox",
+            checked: "checked"
+        }) : INPUT({
+            type: "checkbox"
+        }), LABEL("Auto buy")), DIV(SPAN(model.lastTicketResult))))));
     };
     var gameController = function (model, viewRenderer) {
-        return viewRenderer.$el.find("button").on("click", function () {
+        viewRenderer.$el.find("input").on("change", function (s) {
+            if(s.target.checked) {
+                model.autoBuyIntervalId = setInterval(function () {
+                    model.buyTicket();
+                    viewRenderer.render();
+                }, 1000);
+            } else {
+                clearInterval(model.autoBuyIntervalId);
+                model.autoBuyIntervalId = null;
+            }
+        });
+        viewRenderer.$el.find("button").on("click", function () {
             model.buyTicket();
             viewRenderer.render();
         });
