@@ -127,7 +127,8 @@ module masterModule {
             model.guid = createdElement.Key;
         });
         amplify.subscribe("remote", (results: IgameResult[]) => {
-            $("#remoteResults").html(results.length.toString());
+            var html = results.map((val) =>{ return P("spent: " + val.totalSpent.toString() + " won: " + val.totalWin.toString()) });
+            $("#remoteResults").html(html.join("<br/>"));
         });
         amplify.subscribe("ticketResult", () => {
             refreshTotalResult(model);

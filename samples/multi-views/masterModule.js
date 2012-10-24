@@ -89,7 +89,10 @@ var masterModule;
             model.guid = createdElement.Key;
         });
         amplify.subscribe("remote", function (results) {
-            $("#remoteResults").html(results.length.toString());
+            var html = results.map(function (val) {
+                return P("spent: " + val.totalSpent.toString() + " won: " + val.totalWin.toString());
+            });
+            $("#remoteResults").html(html.join("<br/>"));
         });
         amplify.subscribe("ticketResult", function () {
             refreshTotalResult(model);
