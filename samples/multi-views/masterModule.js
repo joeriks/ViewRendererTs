@@ -60,7 +60,10 @@ var masterModule;
             float: "left"
         }), CSS("#rightContent", {
             width: "50%",
-            float: "left"
+            float: "right"
+        }), CSS("p", {
+            "margin-top": "0px",
+            "margin-bottom": "0px"
         })), DIV({
             id: "leftContent"
         }, viewHeader("Games")), DIV({
@@ -69,7 +72,7 @@ var masterModule;
             id: "fromServer"
         }), DIV({
             id: "remoteResults"
-        }));
+        }, "Loading from server..."));
     };
     var refreshTotalResult = function (model) {
         $("#rightContent div:first").html(totalResult(model));
@@ -97,9 +100,9 @@ var masterModule;
             });
             $.each(results, function (idx, elem) {
                 if(elem.guid == model.guid) {
-                    html += "<p><strong>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + " result: " + (elem.totalWin - elem.totalSpent).toString() + "</strong></p>";
+                    html += "<p><strong>" + idx + ". spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + " result: " + (elem.totalWin - elem.totalSpent).toString() + "</strong></p>";
                 } else {
-                    html += "<p>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + " result: " + (elem.totalWin - elem.totalSpent).toString() + "</p>";
+                    html += "<p>" + idx + ". spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + " result: " + (elem.totalWin - elem.totalSpent).toString() + "</p>";
                 }
             });
             $("#remoteResults").html(html);
