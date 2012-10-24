@@ -3,18 +3,12 @@
 /// <reference path="app.ts"/>
 var masterModule;
 (function (masterModule) {
-    function GUID() {
-        var S4 = function () {
-            return Math.floor(Math.random() * 65536).toString(/* 65536 */
-            16);
-        };
-        return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
-    }
     var MasterModel = (function () {
         function MasterModel() {
             this.games = [];
-            this.guid = GUID();
         }
+        MasterModel.prototype.newRemoteResult = function (remoteResult) {
+        };
         MasterModel.prototype.totalResult = function () {
             var totalSpent = 0;
             var totalWin = 0;
@@ -66,12 +60,27 @@ var masterModule;
         $("#rightContent div:first").html(totalResult(model));
     };
     var masterController = function (model, viewRenderer) {
+        app.ws.bind('Sink.Create', function (createdElement) {
+            model.guid = createdElement.Key;
+        });
         amplify.subscribe("ticketResult", function () {
             refreshTotalResult(model);
             var result = model.totalResult();
+            if(result.guid == null) {
+                app.ws.trigger('Sink.Create', {
+                    Type: 'result',
+                    JSON: result
+                });
+            } else {
+                app.ws.trigger('Sink.Update', {
+                    Key: result.guid,
+                    JSON: result
+                });
+            }
             app.ws.trigger('result', result);
         });
         app.ws.bind('result', function (result) {
+            model.newRemoteResult(result);
             $("#fromServer").html(result.guid);
         });
         // recreate subviews

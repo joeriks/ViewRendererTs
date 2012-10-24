@@ -3,29 +3,13 @@
 /// <reference path="app.ts"/>
 
 module masterModule {
-    function GUID() {
-        var S4 = function () {
-            return Math.floor(
-                    Math.random() * 0x10000 /* 65536 */
-                ).toString(16);
-        };
 
-        return (
-                S4() + S4() + "-" +
-                S4() + "-" +
-                S4() + "-" +
-                S4() + "-" +
-                S4() + S4() + S4()
-            );
-    }
-    interface IgameResult {
-    
+    export interface IgameResult {
         guid: string;
         totalSpent: number;
         totalWin: number;
         totalGames: number;
         maxWin: number;
-    
     }
     export class MasterModel {
         games: gameModule.GameRenderer[];
@@ -33,10 +17,13 @@ module masterModule {
         remoteGames: IgameResult[];
         constructor () {
             this.games = [];
-            this.guid = GUID();
         }
 
-        totalResult():IgameResult {
+        newRemoteResult(remoteResult: IgameResult) {
+
+        }
+
+        totalResult(): IgameResult {
 
             var totalSpent = 0;
             var totalWin = 0;
@@ -59,8 +46,8 @@ module masterModule {
 
     }
 
-    
-    
+
+
     var masterModel = new MasterModel();
 
     var viewHeader = (name: string) => H2(name);
@@ -106,18 +93,28 @@ module masterModule {
     }
 
     var masterController = (model: MasterModel, viewRenderer: ViewRenderer) =>
-
     {
-
+        app.ws.bind('Sink.Create', (createdElement) =>{        
+            model.guid = createdElement.Key;        
+        });
         amplify.subscribe("ticketResult", () => {
             refreshTotalResult(model);
             var result = model.totalResult();
+
+            if (result.guid == null) {
+                app.ws.trigger('Sink.Create', { Type: 'result', JSON: result });
+            } else {
+                app.ws.trigger('Sink.Update', { Key: result.guid, JSON: result });
+            }
+
             app.ws.trigger('result', result);
         });
 
-        app.ws.bind('result', function (result) {
+        app.ws.bind('result', function (result: IgameResult) {
 
+            model.newRemoteResult(result);
             $("#fromServer").html(result.guid);
+
         });
 
         // recreate subviews
@@ -136,8 +133,5 @@ module masterModule {
 
         });
     };
-
-
     export var masterViewRenderer = new ViewRenderer(masterView, masterModel, masterController);
-
 }

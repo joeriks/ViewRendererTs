@@ -1,1 +1,3 @@
-﻿var jXSockets:any;
+﻿module jXSockets {
+    var WebSocket: any;
+}
