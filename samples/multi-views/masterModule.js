@@ -109,7 +109,7 @@ var masterModule;
                 return app.ws.trigger('Sink.Read', {
                     model: 'result'
                 });
-            }, 300);
+            }, 2000);
         });
         amplify.subscribe("ticketResult", function () {
             refreshTotalResult(model);
