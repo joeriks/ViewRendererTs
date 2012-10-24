@@ -10,17 +10,19 @@ var masterModule;
         }
         MasterModel.prototype.newRemoteResult = function (remoteResult) {
             var _this = this;
-            var found = false;
-            $.each(this.remoteGames, function (idx, element) {
-                if(element.guid == remoteResult.guid) {
-                    _this.remoteGames[idx] = remoteResult;
-                    found = true;
+            if(this.remoteGames.length > 0) {
+                var found = false;
+                $.each(this.remoteGames, function (idx, element) {
+                    if(element.guid == remoteResult.guid) {
+                        _this.remoteGames[idx] = remoteResult;
+                        found = true;
+                    }
+                });
+                if(!found) {
+                    this.remoteGames.push(remoteResult);
                 }
-            });
-            if(!found) {
-                this.remoteGames.push(remoteResult);
+                amplify.publish("remote", this.remoteGames);
             }
-            amplify.publish("remote", this.remoteGames);
         };
         MasterModel.prototype.totalResult = function () {
             var totalSpent = 0;

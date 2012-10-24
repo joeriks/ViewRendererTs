@@ -21,18 +21,20 @@ module masterModule {
         }
 
         newRemoteResult(remoteResult: IgameResult) {
-            var found = false;
-            $.each(this.remoteGames, (idx, element) => {
+            if (this.remoteGames.length > 0) {
+                var found = false;
+                $.each(this.remoteGames, (idx, element) => {
 
-                if (element.guid == remoteResult.guid) {
-                    this.remoteGames[idx] = remoteResult;
-                    found = true;
+                    if (element.guid == remoteResult.guid) {
+                        this.remoteGames[idx] = remoteResult;
+                        found = true;
+                    }
+                });
+                if (!found) {
+                    this.remoteGames.push(remoteResult);
                 }
-            });
-            if (!found) {
-                this.remoteGames.push(remoteResult);
+                amplify.publish("remote", this.remoteGames);
             }
-            amplify.publish("remote", this.remoteGames);
         }
 
         totalResult(): IgameResult {
