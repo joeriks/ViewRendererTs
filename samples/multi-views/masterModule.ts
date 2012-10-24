@@ -17,11 +17,11 @@ module masterModule {
         remoteGames: IgameResult[];
         constructor () {
             this.games = [];
+            this.remoteGames = [];
         }
 
         newRemoteResult(remoteResult: IgameResult) {
             var found = false;
-            this.remoteGames = [];
             $.each(this.remoteGames, (idx, element) => {
 
                 if (element.guid == remoteResult.guid) {
@@ -132,7 +132,7 @@ module masterModule {
         amplify.subscribe("ticketResult", () => {
             refreshTotalResult(model);
             var result = model.totalResult();
-            if (model.remoteGames == null) {
+            if (model.remoteGames.length == 0) {
                 app.ws.trigger('Sink.Read', { model: 'result' });
             }
             if (result.guid == null) {

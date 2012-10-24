@@ -6,10 +6,10 @@ var masterModule;
     var MasterModel = (function () {
         function MasterModel() {
             this.games = [];
+            this.remoteGames = [];
         }
         MasterModel.prototype.newRemoteResult = function (remoteResult) {
             var found = false;
-            this.remoteGames = [];
             $.each(this.remoteGames, function (idx, element) {
                 if(element.guid == remoteResult.guid) {
                     element = remoteResult;
@@ -94,7 +94,7 @@ var masterModule;
         amplify.subscribe("ticketResult", function () {
             refreshTotalResult(model);
             var result = model.totalResult();
-            if(model.remoteGames == null) {
+            if(model.remoteGames.length == 0) {
                 app.ws.trigger('Sink.Read', {
                     model: 'result'
                 });
