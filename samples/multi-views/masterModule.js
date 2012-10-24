@@ -92,13 +92,13 @@ var masterModule;
         amplify.subscribe("remote", function (results) {
             var html = "";
             results.sort(function (a, b) {
-                return (a.totalWin - a.totalSpent) - (b.totalWin - b.totalSpent);
+                return (a.totalSpent - a.totalWin) - (b.totalSpent - b.totalWin);
             });
             $.each(results, function (idx, elem) {
                 if(elem.guid == model.guid) {
-                    html += "<p><strong>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + "</strong></p>";
+                    html += "<p><strong>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + " result: " + (elem.totalWin - elem.totalSpent).toString() + "</strong></p>";
                 } else {
-                    html += "<p>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + "</p>";
+                    html += "<p>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + " result: " + (elem.totalWin - elem.totalSpent).toString() + "</p>";
                 }
             });
             $("#remoteResults").html(html);

@@ -128,12 +128,12 @@ module masterModule {
         });
         amplify.subscribe("remote", (results: IgameResult[]) => {
             var html = "";
-            results.sort((a, b) =>{ return (a.totalWin - a.totalSpent) - (b.totalWin - b.totalSpent) });
+            results.sort((a, b) =>{ return (a.totalSpent - a.totalWin) - (b.totalSpent - b.totalWin) });
             $.each(results, (idx, elem) =>{
                 if (elem.guid == model.guid) {
-                    html += "<p><strong>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + "</strong></p>";
+                    html += "<p><strong>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + " result: " + (elem.totalWin-elem.totalSpent).toString() + "</strong></p>";
                 } else {
-                    html += "<p>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + "</p>";
+                    html += "<p>" + "spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + " result: " + (elem.totalWin-elem.totalSpent).toString() + "</p>";
                 }
             });
             $("#remoteResults").html(html);
