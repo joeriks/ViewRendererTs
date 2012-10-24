@@ -92,10 +92,10 @@ module masterModule {
             DIV({ id: "rightContent" },
                 viewHeader("Total Result"),
                 DIV(totalResult(model)),
-                BUTTON("Add game")
-                ),
+                BUTTON("Add game"),                
                 DIV({ id: "fromServer" }),
                 DIV({ id: "remoteResults" }, "Loading from server...")
+                )
 
         );
 
@@ -130,10 +130,11 @@ module masterModule {
             var html = "";
             results.sort((a, b) =>{ return (a.totalSpent - a.totalWin) - (b.totalSpent - b.totalWin) });
             $.each(results, (idx, elem) =>{
+                var position = idx + 1;
                 if (elem.guid == model.guid) {
-                    html += "<p><strong>" + idx + ". spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + " result: " + (elem.totalWin - elem.totalSpent).toString() + "</strong></p>";
+                    html += "<p><strong>" + position + ". Result: " + (elem.totalWin - elem.totalSpent).toString() + " Spent: " + elem.totalSpent.toString() + " Won: " + elem.totalWin.toString() + "</strong></p>";
                 } else {
-                    html += "<p>" + idx + ". spent: " + elem.totalSpent.toString() + " won: " + elem.totalWin.toString() + " result: " + (elem.totalWin - elem.totalSpent).toString() + "</p>";
+                    html += "<p>" + position + ". Result: " + (elem.totalWin - elem.totalSpent).toString() + " Spent: " + elem.totalSpent.toString() + " Won: " + elem.totalWin.toString() + "</p>";
                 }
             });
             $("#remoteResults").html(html);
