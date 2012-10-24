@@ -1,4 +1,4 @@
-/// <reference path="masterModule.ts"/>
+/// <reference path="masterModule/masterModule.ts"/>
 // setup masterview to use body as container
 var app;
 (function (app) {
