@@ -20,7 +20,18 @@ module masterModule {
         }
 
         newRemoteResult(remoteResult: IgameResult) {
+            var found = false;
+            $.each(this.remoteGames, (idx, element) => {
 
+                if (element.guid == remoteResult.guid) {
+                    element = remoteResult;
+                    found = true;
+                }
+            });
+            if (!found) {
+                this.remoteGames.push(remoteResult);
+            }
+            amplify.publish("remote", this.remoteGames);
         }
 
         totalResult(): IgameResult {
@@ -82,7 +93,9 @@ module masterModule {
                 DIV(totalResult(model)),
                 BUTTON("Add game")
                 ),
-                DIV({ id: "fromServer" })
+                DIV({ id: "fromServer" }),
+                DIV({ id: "remoteResults" })
+
         );
 
 
@@ -94,8 +107,27 @@ module masterModule {
 
     var masterController = (model: MasterModel, viewRenderer: ViewRenderer) =>
     {
+        app.ws.bind('Sink.Read', (allElements) =>{
+            $.each(allElements, (idx, element) => {
+
+                model.remoteGames.push({
+                    guid: element.Key,
+                    maxWin: element.JSON.maxWin,
+                    totalGames: element.JSON.totalGames,
+                    totalSpent: element.JSON.totalSpent,
+                    totalWin: element.JSON.totalWin
+                });
+
+            });
+        });
+
+        app.ws.trigger('Sink.Read', { model: 'result' });
+
         app.ws.bind('Sink.Create', (createdElement) =>{        
             model.guid = createdElement.Key;        
+        });
+        amplify.subscribe("remote", (results: IgameResult[]) => {
+            $("#remoteResults").html(results.length.toString());
         });
         amplify.subscribe("ticketResult", () => {
             refreshTotalResult(model);
