@@ -9,10 +9,11 @@ var masterModule;
             this.remoteGames = [];
         }
         MasterModel.prototype.newRemoteResult = function (remoteResult) {
+            var _this = this;
             var found = false;
             $.each(this.remoteGames, function (idx, element) {
                 if(element.guid == remoteResult.guid) {
-                    element = remoteResult;
+                    _this.remoteGames[idx] = remoteResult;
                     found = true;
                 }
             });
@@ -118,7 +119,6 @@ var masterModule;
         });
         app.ws.bind('result', function (result) {
             model.newRemoteResult(result);
-            $("#fromServer").html(result.guid);
         });
         // recreate subviews
         $.each(model.games, function (idx, game) {

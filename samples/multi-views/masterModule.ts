@@ -25,7 +25,7 @@ module masterModule {
             $.each(this.remoteGames, (idx, element) => {
 
                 if (element.guid == remoteResult.guid) {
-                    element = remoteResult;
+                    this.remoteGames[idx] = remoteResult;
                     found = true;
                 }
             });
@@ -151,7 +151,6 @@ module masterModule {
         app.ws.bind('result', function (result: IgameResult) {
 
             model.newRemoteResult(result);
-            $("#fromServer").html(result.guid);
 
         });
 
