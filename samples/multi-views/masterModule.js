@@ -111,7 +111,7 @@ var masterModule;
         $(function () {
             return setTimeout(function () {
                 return app.ws.trigger('Sink.Read', {
-                    model: 'result'
+                    model: 'result-triss'
                 });
             }, 2000);
         });
@@ -120,7 +120,7 @@ var masterModule;
             var result = model.totalResult();
             if(result.guid == null) {
                 app.ws.trigger('Sink.Create', {
-                    Type: 'result',
+                    Type: 'result-triss',
                     JSON: result
                 });
             } else {

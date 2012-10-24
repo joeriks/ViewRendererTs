@@ -142,14 +142,14 @@ module masterModule {
 
         $(() =>
             setTimeout(() =>
-                app.ws.trigger('Sink.Read', { model: 'result' });
+                app.ws.trigger('Sink.Read', { model: 'result-triss' });
             , 2000));
 
         amplify.subscribe("ticketResult", () => {
             refreshTotalResult(model);
             var result = model.totalResult();
             if (result.guid == null) {
-                app.ws.trigger('Sink.Create', { Type: 'result', JSON: result });
+                app.ws.trigger('Sink.Create', { Type: 'result-triss', JSON: result });
             } else {
                 app.ws.trigger('Sink.Update', { Key: result.guid, JSON: result });
             }
