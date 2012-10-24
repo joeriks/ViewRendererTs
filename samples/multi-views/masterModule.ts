@@ -21,6 +21,7 @@ module masterModule {
 
         newRemoteResult(remoteResult: IgameResult) {
             var found = false;
+            this.remoteGames = [];
             $.each(this.remoteGames, (idx, element) => {
 
                 if (element.guid == remoteResult.guid) {
@@ -121,9 +122,7 @@ module masterModule {
             });
         });
 
-        $(() => {
-            app.ws.trigger('Sink.Read', { model: 'result' });
-        });
+
         app.ws.bind('Sink.Create', (createdElement) =>{
             model.guid = createdElement.Key;
         });
@@ -133,7 +132,9 @@ module masterModule {
         amplify.subscribe("ticketResult", () => {
             refreshTotalResult(model);
             var result = model.totalResult();
-
+            if (model.remoteGames == null) {
+                app.ws.trigger('Sink.Read', { model: 'result' });
+            }
             if (result.guid == null) {
                 app.ws.trigger('Sink.Create', { Type: 'result', JSON: result });
             } else {

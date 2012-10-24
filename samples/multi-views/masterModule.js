@@ -9,6 +9,7 @@ var masterModule;
         }
         MasterModel.prototype.newRemoteResult = function (remoteResult) {
             var found = false;
+            this.remoteGames = [];
             $.each(this.remoteGames, function (idx, element) {
                 if(element.guid == remoteResult.guid) {
                     element = remoteResult;
@@ -84,11 +85,6 @@ var masterModule;
                 });
             });
         });
-        $(function () {
-            app.ws.trigger('Sink.Read', {
-                model: 'result'
-            });
-        });
         app.ws.bind('Sink.Create', function (createdElement) {
             model.guid = createdElement.Key;
         });
@@ -98,6 +94,11 @@ var masterModule;
         amplify.subscribe("ticketResult", function () {
             refreshTotalResult(model);
             var result = model.totalResult();
+            if(model.remoteGames == null) {
+                app.ws.trigger('Sink.Read', {
+                    model: 'result'
+                });
+            }
             if(result.guid == null) {
                 app.ws.trigger('Sink.Create', {
                     Type: 'result',
