@@ -25,7 +25,7 @@ var masterModule;
             id: "leftContent"
         }, viewHeader("Games")), DIV({
             id: "rightContent"
-        }, viewHeader("Swedish Triss lottery win simulator"), P("This is using a randomizer and actual statistics for Swedish Triss lottery. One of their advertising slogans is 'suddenly it happens'. This simulator might show just how sudden you can expect it to happen... It is bad odds, only half the money goes back to the lottery buyers. And the chance of winning big is microscopic. Still it's really popular. ", A({
+        }, viewHeader("Swedish Triss lottery win simulator"), P("This is using a randomizer and actual statistics for Swedish Triss lottery. One of their advertising slogans is 'suddenly it happens'. This simulator might show just how sudden you can expect it to happen... It is bad odds, only half the money goes back to the lottery buyers, and as much as 20% of the win money goes to the 10 biggest wins. And the chance of winning big is microscopic. Have fun! :) ", A({
             href: "https://svenskaspel.se/img/pdf/Triss-vinstplan-ordinarie_0903.pdf"
         }, "Triss lottery statistics")), P("The tech side of this is I wanted to write a client side application using the MVC pattern but without any pre-made MVC framework. I wrote it using TypeScript. You can find the code at ", A({
             href: "https://github.com/joeriks/viewrendererts"
