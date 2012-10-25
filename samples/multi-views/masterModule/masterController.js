@@ -50,7 +50,8 @@ var masterModule;
             });
             $.each(results, function (idx, elem) {
                 var position = idx + 1;
-                var result = position + ". Result: " + (elem.totalWin - elem.totalSpent).toString() + " Spent: " + elem.totalSpent.toString() + " Won: " + elem.totalWin.toString() + " (" + Math.round(elem.totalWin / elem.totalSpent * 100).toString + "%) max win:" + elem.maxWin.toString();
+                var identity = elem.guid.substr(0, 5);
+                var result = position + ". '" + identity + "' Result: " + (elem.totalWin - elem.totalSpent).toString() + " Spent: " + elem.totalSpent.toString() + " Won: " + elem.totalWin.toString() + " (" + Math.round(elem.totalWin / elem.totalSpent * 100).toString() + "%) max win:" + elem.maxWin.toString();
                 if(elem.guid == model.guid) {
                     html += "<p><strong>" + result + "</strong></p>";
                 } else {
