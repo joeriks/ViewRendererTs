@@ -38,10 +38,13 @@ module masterModule {
             results.sort((a, b) =>{ return (a.totalSpent - a.totalWin) - (b.totalSpent - b.totalWin) });
             $.each(results, (idx, elem) =>{
                 var position = idx + 1;
+
+                var result = position + ". Result: " + (elem.totalWin - elem.totalSpent).toString() + " Spent: " + elem.totalSpent.toString() + " Won: " + elem.totalWin.toString() + " (" + Math.round(elem.totalWin/elem.totalSpent*100).toString + "%) max win:" + elem.maxWin.toString();
+
                 if (elem.guid == model.guid) {
-                    html += "<p><strong>" + position + ". Result: " + (elem.totalWin - elem.totalSpent).toString() + " Spent: " + elem.totalSpent.toString() + " Won: " + elem.totalWin.toString() + " max win:" + elem.maxWin.toString() + "</strong></p>";
+                    html += "<p><strong>" + result + "</strong></p>";
                 } else {
-                    html += "<p>" + position + ". Result: " + (elem.totalWin - elem.totalSpent).toString() + " Spent: " + elem.totalSpent.toString() + " Won: " + elem.totalWin.toString() + " max win:" + elem.maxWin.toString() + "</p>";
+                    html += "<p>" + result + "</p>";
                 }
             });
             $("#remoteResults").html(html);

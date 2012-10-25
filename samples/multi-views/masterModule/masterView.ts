@@ -14,7 +14,8 @@ module masterModule {
             P("Total games: " + result.totalGames),
             P("Total spent: " + result.totalSpent),
             P("Max win: " + result.maxWin),
-            P("Total win: " + result.totalWin)
+            P("Total win: " + result.totalWin),
+            P("Percentage win: " + Math.round(result.totalWin*100/result.totalSpent).toString() + "%")
             )
     }
 
