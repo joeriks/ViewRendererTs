@@ -7,32 +7,40 @@ var masterModule;
         $("#rightContent div:first").html(masterModule.totalResult(model));
     };
     masterModule.masterController = function (model, viewRenderer) {
-        app.ws = new jXSockets.WebSocket("ws://xsocketslive.cloudapp.net:10101/XSockets.Live.Realtime.API", "XSockets.Live.Realtime.API", app.wsSettings);
-        app.ws.bind('open', function () {
-            app.ws.trigger('Sink.Read', {
-                model: 'result-triss'
-            });
-        });
-        app.ws.bind('Sink.Read', function (allElements) {
-            $.each(allElements, function (idx, element) {
-                model.remoteGames.push({
-                    guid: element.Key,
-                    maxWin: element.JSON.maxWin,
-                    totalGames: element.JSON.totalGames,
-                    totalSpent: element.JSON.totalSpent,
-                    totalWin: element.JSON.totalWin
+        if(xSocketsModule.enabled) {
+            xSocketsModule.ws = new jXSockets.WebSocket("ws://xsocketslive.cloudapp.net:10101/XSockets.Live.Realtime.API", "XSockets.Live.Realtime.API", xSocketsModule.wsSettings);
+            xSocketsModule.ws.bind('open', function () {
+                xSocketsModule.ws.trigger('Sink.Read', {
+                    model: 'result-triss'
                 });
             });
-            app.localPublish("remote", model.remoteGames);
+            xSocketsModule.ws.bind('Sink.Read', function (allElements) {
+                $.each(allElements, function (idx, element) {
+                    model.remoteGames.push({
+                        guid: element.Key,
+                        maxWin: element.JSON.maxWin,
+                        totalGames: element.JSON.totalGames,
+                        totalSpent: element.JSON.totalSpent,
+                        totalWin: element.JSON.totalWin
+                    });
+                });
+                app.localPublish("remote", model.remoteGames);
+                $("#addgame").show();
+            });
+            xSocketsModule.ws.bind('Sink.Create', function (createdElement) {
+                model.guid = createdElement.Key;
+            });
+            xSocketsModule.ws.bind('result', function (result) {
+                model.newRemoteResult(result);
+            });
+            setTimeout(function () {
+                $("#remoteResults").html("Cannot reach server, so no high-scores, sorry.");
+                $("#addgame").show();
+            }, 2000);
+        } else {
+            $("#remoteResults").html("High-scores currently disabled, sorry.");
             $("#addgame").show();
-        });
-        setTimeout(function () {
-            $("#remoteResults").html("Cannot reach server, so no high-scores, sorry.");
-            $("#addgame").show();
-        }, 2000);
-        app.ws.bind('Sink.Create', function (createdElement) {
-            model.guid = createdElement.Key;
-        });
+        }
         app.localSubscribe("remote", function (results) {
             var html = "";
             results.sort(function (a, b) {
@@ -52,23 +60,20 @@ var masterModule;
         app.localSubscribe("ticketResult", function () {
             masterModule.refreshTotalResult(model);
             var result = model.totalResult();
-            if(typeof (webSocket) != "undefined" && webSocket.readyState == 1) {
+            if(xSocketsModule.enabled && typeof (webSocket) != "undefined" && webSocket.readyState == 1) {
                 if(result.guid == null) {
-                    app.ws.trigger('Sink.Create', {
+                    xSocketsModule.ws.trigger('Sink.Create', {
                         Type: 'result-triss',
                         JSON: result
                     });
                 } else {
-                    app.ws.trigger('Sink.Update', {
+                    xSocketsModule.ws.trigger('Sink.Update', {
                         Key: result.guid,
                         JSON: result
                     });
                 }
-                app.ws.trigger('result', result);
+                xSocketsModule.ws.trigger('result', result);
             }
-        });
-        app.ws.bind('result', function (result) {
-            model.newRemoteResult(result);
         });
         // recreate subviews
         $.each(model.games, function (idx, game) {

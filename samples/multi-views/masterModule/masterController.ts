@@ -12,44 +12,51 @@ module masterModule {
 
     export var masterController = (model: MasterModel, viewRenderer: ViewRenderer) =>
     {
-        app.ws = new jXSockets.WebSocket("ws://xsocketslive.cloudapp.net:10101/XSockets.Live.Realtime.API",
-    "XSockets.Live.Realtime.API", app.wsSettings);
+        if (xSocketsModule.enabled) {
 
-        app.ws.bind('open', () => {
+            xSocketsModule.ws = new jXSockets.WebSocket("ws://xsocketslive.cloudapp.net:10101/XSockets.Live.Realtime.API",
+        "XSockets.Live.Realtime.API", xSocketsModule.wsSettings);
 
-            app.ws.trigger('Sink.Read', {
-                model: 'result-triss'
-            });
+            xSocketsModule.ws.bind('open', () => {
 
-        });
-
-        app.ws.bind('Sink.Read', (allElements) =>{
-            $.each(allElements, (idx, element) => {
-
-                model.remoteGames.push({
-                    guid: element.Key,
-                    maxWin: element.JSON.maxWin,
-                    totalGames: element.JSON.totalGames,
-                    totalSpent: element.JSON.totalSpent,
-                    totalWin: element.JSON.totalWin
+                xSocketsModule.ws.trigger('Sink.Read', {
+                    model: 'result-triss'
                 });
 
             });
-            app.localPublish("remote", model.remoteGames);
+
+            xSocketsModule.ws.bind('Sink.Read', (allElements) =>{
+                $.each(allElements, (idx, element) => {
+
+                    model.remoteGames.push({
+                        guid: element.Key,
+                        maxWin: element.JSON.maxWin,
+                        totalGames: element.JSON.totalGames,
+                        totalSpent: element.JSON.totalSpent,
+                        totalWin: element.JSON.totalWin
+                    });
+
+                });
+                app.localPublish("remote", model.remoteGames);
+                $("#addgame").show();
+
+            });
+            xSocketsModule.ws.bind('Sink.Create', (createdElement) =>{
+                model.guid = createdElement.Key;
+            });
+            xSocketsModule.ws.bind('result', function (result: IgameResult) {
+                model.newRemoteResult(result);
+            });
+            setTimeout(() =>{
+
+                $("#remoteResults").html("Cannot reach server, so no high-scores, sorry.");
+                $("#addgame").show();
+
+            }, 2000);
+        } else {
+            $("#remoteResults").html("High-scores currently disabled, sorry.");
             $("#addgame").show();
-
-        });
-
-        setTimeout(() =>{
-
-            $("#remoteResults").html("Cannot reach server, so no high-scores, sorry.");
-            $("#addgame").show();
-
-        }, 2000);
-
-        app.ws.bind('Sink.Create', (createdElement) =>{
-            model.guid = createdElement.Key;
-        });
+        }
 
         app.localSubscribe("remote", (results: IgameResult[]) => {
             var html = "";
@@ -73,23 +80,18 @@ module masterModule {
             refreshTotalResult(model);
             var result = model.totalResult();
 
-            if (typeof(webSocket)!="undefined" && webSocket.readyState == 1) {
+            if (xSocketsModule.enabled && typeof (webSocket) != "undefined" && webSocket.readyState == 1) {
 
                 if (result.guid == null) {
-                    app.ws.trigger('Sink.Create', { Type: 'result-triss', JSON: result });
+                    xSocketsModule.ws.trigger('Sink.Create', { Type: 'result-triss', JSON: result });
                 } else {
-                    app.ws.trigger('Sink.Update', { Key: result.guid, JSON: result });
+                    xSocketsModule.ws.trigger('Sink.Update', { Key: result.guid, JSON: result });
                 }
 
-                app.ws.trigger('result', result);
+                xSocketsModule.ws.trigger('result', result);
             }
         });
 
-        app.ws.bind('result', function (result: IgameResult) {
-
-            model.newRemoteResult(result);
-
-        });
 
         // recreate subviews
 

@@ -5,6 +5,7 @@
 /// <reference path="../../libs/jxsockets.d.ts"/>
 
 /// <reference path="lotteryModule/trissLottery.ts"/>
+/// <reference path="xSocketsModule/xSocketsModule.ts"/>
 
 /// <reference path="gameModule/gameModule.ts"/>
 
