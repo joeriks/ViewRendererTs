@@ -52,18 +52,20 @@ var masterModule;
         app.localSubscribe("ticketResult", function () {
             masterModule.refreshTotalResult(model);
             var result = model.totalResult();
-            if(result.guid == null) {
-                app.ws.trigger('Sink.Create', {
-                    Type: 'result-triss',
-                    JSON: result
-                });
-            } else {
-                app.ws.trigger('Sink.Update', {
-                    Key: result.guid,
-                    JSON: result
-                });
+            if(webSocket.readyState == 1) {
+                if(result.guid == null) {
+                    app.ws.trigger('Sink.Create', {
+                        Type: 'result-triss',
+                        JSON: result
+                    });
+                } else {
+                    app.ws.trigger('Sink.Update', {
+                        Key: result.guid,
+                        JSON: result
+                    });
+                }
+                app.ws.trigger('result', result);
             }
-            app.ws.trigger('result', result);
         });
         app.ws.bind('result', function (result) {
             model.newRemoteResult(result);

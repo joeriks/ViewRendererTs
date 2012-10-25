@@ -12,3 +12,9 @@
         send(payload: Object): void;
     }
 }
+
+interface IWebSocket {
+    readyState: number;
+}
+
+declare var webSocket: IWebSocket;
