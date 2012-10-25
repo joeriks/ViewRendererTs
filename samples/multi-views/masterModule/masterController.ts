@@ -73,7 +73,7 @@ module masterModule {
             refreshTotalResult(model);
             var result = model.totalResult();
 
-            if (webSocket.readyState == 1) {
+            if (typeof(webSocket)!="undefined" && webSocket.readyState == 1) {
 
                 if (result.guid == null) {
                     app.ws.trigger('Sink.Create', { Type: 'result-triss', JSON: result });
