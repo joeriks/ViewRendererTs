@@ -42,20 +42,18 @@ module masterModule {
         }
 
         newRemoteResult(remoteResult: IgameResult) {
-            if (this.remoteGames.length > 0) {
-                var found = false;
-                $.each(this.remoteGames, (idx, element) => {
+            var found = false;
+            $.each(this.remoteGames, (idx, element) => {
 
-                    if (element.guid == remoteResult.guid) {
-                        this.remoteGames[idx] = remoteResult;
-                        found = true;
-                    }
-                });
-                if (!found) {
-                    this.remoteGames.push(remoteResult);
+                if (element.guid == remoteResult.guid) {
+                    this.remoteGames[idx] = remoteResult;
+                    found = true;
                 }
-                app.localPublish("remote", this.remoteGames);
+            });
+            if (!found) {
+                this.remoteGames.push(remoteResult);
             }
+            app.localPublish("remote", this.remoteGames);
         }
 
         totalResult(): IgameResult {
