@@ -10,8 +10,6 @@ module masterModule {
         );
     }
 
-
-
     export var masterController = (model: MasterModel, viewRenderer: ViewRenderer) =>
     {
         app.ws.bind('Sink.Read', (allElements) =>{
@@ -59,7 +57,7 @@ module masterModule {
                 $("#addgame").show();
 
             }
-            , 2000));
+            , 4000));
 
         app.localSubscribe("ticketResult", () => {
             refreshTotalResult(model);

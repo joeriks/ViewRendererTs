@@ -44,7 +44,7 @@ var masterModule;
                     model: 'result-triss'
                 });
                 $("#addgame").show();
-            }, 2000);
+            }, 4000);
         });
         app.localSubscribe("ticketResult", function () {
             masterModule.refreshTotalResult(model);
