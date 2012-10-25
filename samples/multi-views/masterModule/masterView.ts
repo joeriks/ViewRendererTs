@@ -32,6 +32,7 @@ module masterModule {
 
             DIV({ id: "rightContent" },
                 viewHeader("Total Result"),
+                H3("Using actual lottery statistics for Swedish Triss lottery = bad odds"),
                 DIV(totalResult(model)),
                 BUTTON({ id: "addgame", style: "display:none;" }, "Add game"),
                 DIV({ id: "fromServer" }),

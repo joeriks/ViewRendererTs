@@ -25,7 +25,7 @@ var masterModule;
             id: "leftContent"
         }, viewHeader("Games")), DIV({
             id: "rightContent"
-        }, viewHeader("Total Result"), DIV(masterModule.totalResult(model)), BUTTON({
+        }, viewHeader("Total Result"), H3("Using actual lottery statistics for Swedish Triss lottery = bad odds"), DIV(masterModule.totalResult(model)), BUTTON({
             id: "addgame",
             style: "display:none;"
         }, "Add game"), DIV({
