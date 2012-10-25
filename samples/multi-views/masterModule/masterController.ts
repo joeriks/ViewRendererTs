@@ -12,6 +12,10 @@ module masterModule {
 
     export var masterController = (model: MasterModel, viewRenderer: ViewRenderer) =>
     {
+        app.ws = new jXSockets.WebSocket("ws://xsocketslive.cloudapp.net:10101/XSockets.Live.Realtime.API",
+    "XSockets.Live.Realtime.API", app.wsSettings);
+
+
         app.ws.bind('Sink.Read', (allElements) =>{
             $.each(allElements, (idx, element) => {
 
@@ -25,6 +29,8 @@ module masterModule {
 
             });
             app.localPublish("remote", model.remoteGames);
+            $("#addgame").show();
+
         });
 
         app.ws.bind('Sink.Create', (createdElement) =>{
@@ -37,7 +43,7 @@ module masterModule {
             $.each(results, (idx, elem) =>{
                 var position = idx + 1;
 
-                var result = position + ". Result: " + (elem.totalWin - elem.totalSpent).toString() + " Spent: " + elem.totalSpent.toString() + " Won: " + elem.totalWin.toString() + " (" + Math.round(elem.totalWin/elem.totalSpent*100).toString + "%) max win:" + elem.maxWin.toString();
+                var result = position + ". Result: " + (elem.totalWin - elem.totalSpent).toString() + " Spent: " + elem.totalSpent.toString() + " Won: " + elem.totalWin.toString() + " (" + Math.round(elem.totalWin / elem.totalSpent * 100).toString + "%) max win:" + elem.maxWin.toString();
 
                 if (elem.guid == model.guid) {
                     html += "<p><strong>" + result + "</strong></p>";
@@ -48,16 +54,13 @@ module masterModule {
             $("#remoteResults").html(html);
         });
 
-        $(() =>
-            setTimeout(() => {
+        app.ws.bind('open', () => {
 
-                app.ws.trigger('Sink.Read', {
-                    model: 'result-triss'
-                });
-                $("#addgame").show();
+            app.ws.trigger('Sink.Read', {
+                model: 'result-triss'
+            });
 
-            }
-            , 4000));
+        });
 
         app.localSubscribe("ticketResult", () => {
             refreshTotalResult(model);

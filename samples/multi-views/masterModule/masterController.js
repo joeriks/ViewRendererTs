@@ -7,6 +7,7 @@ var masterModule;
         $("#rightContent div:first").html(masterModule.totalResult(model));
     };
     masterModule.masterController = function (model, viewRenderer) {
+        app.ws = new jXSockets.WebSocket("ws://xsocketslive.cloudapp.net:10101/XSockets.Live.Realtime.API", "XSockets.Live.Realtime.API", app.wsSettings);
         app.ws.bind('Sink.Read', function (allElements) {
             $.each(allElements, function (idx, element) {
                 model.remoteGames.push({
@@ -18,6 +19,7 @@ var masterModule;
                 });
             });
             app.localPublish("remote", model.remoteGames);
+            $("#addgame").show();
         });
         app.ws.bind('Sink.Create', function (createdElement) {
             model.guid = createdElement.Key;
@@ -38,13 +40,10 @@ var masterModule;
             });
             $("#remoteResults").html(html);
         });
-        $(function () {
-            return setTimeout(function () {
-                app.ws.trigger('Sink.Read', {
-                    model: 'result-triss'
-                });
-                $("#addgame").show();
-            }, 4000);
+        app.ws.bind('open', function () {
+            app.ws.trigger('Sink.Read', {
+                model: 'result-triss'
+            });
         });
         app.localSubscribe("ticketResult", function () {
             masterModule.refreshTotalResult(model);
