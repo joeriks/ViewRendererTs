@@ -26,6 +26,10 @@ var masterModule;
             app.localPublish("remote", model.remoteGames);
             $("#addgame").show();
         });
+        setTimeout(function () {
+            $("#remoteResults").html("Cannot reach server, so no high-scores, sorry.");
+            $("#addgame").show();
+        }, 2000);
         app.ws.bind('Sink.Create', function (createdElement) {
             model.guid = createdElement.Key;
         });

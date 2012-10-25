@@ -40,6 +40,13 @@ module masterModule {
 
         });
 
+        setTimeout(() =>{
+
+            $("#remoteResults").html("Cannot reach server, so no high-scores, sorry.");
+            $("#addgame").show();
+
+        }, 2000);
+
         app.ws.bind('Sink.Create', (createdElement) =>{
             model.guid = createdElement.Key;
         });
