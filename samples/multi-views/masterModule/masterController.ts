@@ -15,6 +15,13 @@ module masterModule {
         app.ws = new jXSockets.WebSocket("ws://xsocketslive.cloudapp.net:10101/XSockets.Live.Realtime.API",
     "XSockets.Live.Realtime.API", app.wsSettings);
 
+        app.ws.bind('open', () => {
+
+            app.ws.trigger('Sink.Read', {
+                model: 'result-triss'
+            });
+
+        });
 
         app.ws.bind('Sink.Read', (allElements) =>{
             $.each(allElements, (idx, element) => {
@@ -54,13 +61,6 @@ module masterModule {
             $("#remoteResults").html(html);
         });
 
-        app.ws.bind('open', () => {
-
-            app.ws.trigger('Sink.Read', {
-                model: 'result-triss'
-            });
-
-        });
 
         app.localSubscribe("ticketResult", () => {
             refreshTotalResult(model);

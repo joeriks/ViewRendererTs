@@ -2,16 +2,16 @@
 
 "I was inspired by the many good javascript frameworks out there so I made my own".
 
-Not. This is a _very simple_ playful & experimental approach building client side functionality MVC style with typescript. 
+Not. This is something I did to learn about what it takes to build simple client side functionality MVC style with TypeScript, without a framework. 
 
-It boils down to the three MVC components:
+In my approach I used the three MVC components this way:
 
 * The model 
-	A TypeScript class or a plain javascript model.
+**	A TypeScript class or a plain javascript model.
 * The view
-	Essentially a function that returns html.
+**	Essentially a function that returns html.
 * The controller 
-	The controller is invoked on view render. It hooks upp bindings. Can be user actions, timers, router events, pubsub publishs, clicks or whatever.
+**	The controller is invoked on view render. It hooks upp bindings. Can be user actions, timers, router events, pubsub publishs, clicks or whatever.
 
 The components are tied together with a ViewRenderer class (25 lines of code). It takes the mentioned components as parameters and has a render function which renders the view on a given jQuery element.
 
