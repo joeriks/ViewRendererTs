@@ -62,7 +62,7 @@ var masterModule;
         app.localSubscribe("ticketResult", function () {
             masterModule.refreshTotalResult(model);
             var result = model.totalResult();
-            if(xSocketsModule.enabled && typeof (webSocket) != "undefined" && webSocket.readyState == 1) {
+            if(xSocketsModule.enabled) {
                 if(xSocketsModule.enableSink) {
                     if(result.guid == null) {
                         xSocketsModule.ws.trigger('Sink.Create', {
