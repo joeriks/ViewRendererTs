@@ -17,33 +17,36 @@ module masterModule {
             xSocketsModule.ws = new jXSockets.WebSocket("ws://xsocketslive.cloudapp.net:10101/XSockets.Live.Realtime.API",
         "XSockets.Live.Realtime.API", xSocketsModule.wsSettings);
 
-            xSocketsModule.ws.bind('open', () => {
+            if (xSocketsModule.enableSink) {
+                xSocketsModule.ws.bind('open', () => {
 
-                xSocketsModule.ws.trigger('Sink.Read', {
-                    model: 'result-triss'
-                });
-
-            });
-
-            xSocketsModule.ws.bind('Sink.Read', (allElements) =>{
-                $.each(allElements, (idx, element) => {
-
-                    model.remoteGames.push({
-                        guid: element.Key,
-                        maxWin: element.JSON.maxWin,
-                        totalGames: element.JSON.totalGames,
-                        totalSpent: element.JSON.totalSpent,
-                        totalWin: element.JSON.totalWin
+                    xSocketsModule.ws.trigger('Sink.Read', {
+                        model: 'result-triss'
                     });
 
                 });
-                app.localPublish("remote", model.remoteGames);
-                $("#addgame").show();
 
-            });
-            xSocketsModule.ws.bind('Sink.Create', (createdElement) =>{
-                model.guid = createdElement.Key;
-            });
+                xSocketsModule.ws.bind('Sink.Read', (allElements) =>{
+                    $.each(allElements, (idx, element) => {
+
+                        model.remoteGames.push({
+                            guid: element.Key,
+                            maxWin: element.JSON.maxWin,
+                            totalGames: element.JSON.totalGames,
+                            totalSpent: element.JSON.totalSpent,
+                            totalWin: element.JSON.totalWin
+                        });
+
+                    });
+                    app.localPublish("remote", model.remoteGames);
+                    $("#addgame").show();
+
+                });
+                xSocketsModule.ws.bind('Sink.Create', (createdElement) =>{
+                    model.guid = createdElement.Key;
+                });
+
+            }
             xSocketsModule.ws.bind('result', function (result: IgameResult) {
                 model.newRemoteResult(result);
             });
@@ -82,10 +85,12 @@ module masterModule {
 
             if (xSocketsModule.enabled && typeof (webSocket) != "undefined" && webSocket.readyState == 1) {
 
-                if (result.guid == null) {
-                    xSocketsModule.ws.trigger('Sink.Create', { Type: 'result-triss', JSON: result });
-                } else {
-                    xSocketsModule.ws.trigger('Sink.Update', { Key: result.guid, JSON: result });
+                if (xSocketsModule.enableSink) {
+                    if (result.guid == null) {
+                        xSocketsModule.ws.trigger('Sink.Create', { Type: 'result-triss', JSON: result });
+                    } else {
+                        xSocketsModule.ws.trigger('Sink.Update', { Key: result.guid, JSON: result });
+                    }
                 }
 
                 xSocketsModule.ws.trigger('result', result);

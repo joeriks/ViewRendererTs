@@ -3,10 +3,20 @@
 /// <reference path="../app.ts"/>
 var masterModule;
 (function (masterModule) {
+    function GUID() {
+        var S4 = function () {
+            return Math.floor(Math.random() * 65536).toString(/* 65536 */
+            16);
+        };
+        return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+    }
     var MasterModel = (function () {
         function MasterModel() {
             this.games = [];
             this.remoteGames = [];
+            if(!xSocketsModule.enableSink) {
+                this.guid = GUID();
+            }
         }
         MasterModel.prototype.newRemoteResult = function (remoteResult) {
             var _this = this;

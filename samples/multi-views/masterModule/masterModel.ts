@@ -11,6 +11,23 @@ module masterModule {
         totalGames: number;
         maxWin: number;
     }
+
+    function GUID() {
+        var S4 = function () {
+            return Math.floor(
+                    Math.random() * 0x10000 /* 65536 */
+                ).toString(16);
+        };
+
+        return (
+                S4() + S4() + "-" +
+                S4() + "-" +
+                S4() + "-" +
+                S4() + "-" +
+                S4() + S4() + S4()
+            );
+    }
+
     export class MasterModel {
         games: gameModule.GameRenderer[];
         guid: string;
@@ -18,6 +35,10 @@ module masterModule {
         constructor () {
             this.games = [];
             this.remoteGames = [];
+
+            if (!xSocketsModule.enableSink) {
+                this.guid = GUID();
+            }
         }
 
         newRemoteResult(remoteResult: IgameResult) {
