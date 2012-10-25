@@ -1,7 +1,7 @@
 ﻿/// <reference path="../ref.ts"/> 
+/// <reference path="../app.ts"/>
 
 module gameModule {
-
     export class GameModel {
 
         boughtTickets: number;
@@ -34,41 +34,29 @@ module gameModule {
             for (var idx in this.lottery.winMatrix) {
                 var elem = this.lottery.winMatrix[idx];
                 if (random >= elem.fromTicketNumber) {
-
                     win = elem.winAmount;
                     break;
-
                 }
-
             }
 
             if (win > 0) {
-
                 this.lastTicketResult = "Win " + win;
                 this.wonMoney += win;
                 if (win > this.maxWin) this.maxWin = win;
             }
             else {
-
                 this.lastTicketResult = "No win";
             }
             this.lastTicketWin = win;
-
-            amplify.publish("ticketResult", this);
-
+            app.localPublish("ticketResult", this);
             return win;
         }
 
         result() {
-
             return this.wonMoney - this.spentMoney();
-
         }
-
         spentMoney() {
-
             return this.boughtTickets * this.lottery.lotteryPrice;
-
         }
     }
 

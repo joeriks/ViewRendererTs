@@ -21,7 +21,7 @@ var masterModule;
                 if(!found) {
                     this.remoteGames.push(remoteResult);
                 }
-                amplify.publish("remote", this.remoteGames);
+                app.localPublish("remote", this.remoteGames);
             }
         };
         MasterModel.prototype.totalResult = function () {

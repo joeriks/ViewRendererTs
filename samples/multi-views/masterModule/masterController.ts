@@ -10,6 +10,8 @@ module masterModule {
         );
     }
 
+
+
     export var masterController = (model: MasterModel, viewRenderer: ViewRenderer) =>
     {
         app.ws.bind('Sink.Read', (allElements) =>{
@@ -24,13 +26,14 @@ module masterModule {
                 });
 
             });
-            amplify.publish("remote", model.remoteGames);
+            app.localPublish("remote", model.remoteGames);
         });
 
         app.ws.bind('Sink.Create', (createdElement) =>{
             model.guid = createdElement.Key;
         });
-        amplify.subscribe("remote", (results: IgameResult[]) => {
+
+        app.localSubscribe("remote", (results: IgameResult[]) => {
             var html = "";
             results.sort((a, b) =>{ return (a.totalSpent - a.totalWin) - (b.totalSpent - b.totalWin) });
             $.each(results, (idx, elem) =>{
@@ -48,13 +51,14 @@ module masterModule {
             setTimeout(() => {
 
                 app.ws.trigger('Sink.Read', {
-            model: 'result-triss'
-        });
-                  $("#addgame").show();
-        }
+                    model: 'result-triss'
+                });
+                $("#addgame").show();
+
+            }
             , 2000));
 
-        amplify.subscribe("ticketResult", () => {
+        app.localSubscribe("ticketResult", () => {
             refreshTotalResult(model);
             var result = model.totalResult();
             if (result.guid == null) {

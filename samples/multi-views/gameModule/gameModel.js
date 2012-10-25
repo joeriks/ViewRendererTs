@@ -1,4 +1,5 @@
 /// <reference path="../ref.ts"/>
+/// <reference path="../app.ts"/>
 var gameModule;
 (function (gameModule) {
     var GameModel = (function () {
@@ -33,7 +34,7 @@ var gameModule;
                 this.lastTicketResult = "No win";
             }
             this.lastTicketWin = win;
-            amplify.publish("ticketResult", this);
+            app.localPublish("ticketResult", this);
             return win;
         };
         GameModel.prototype.result = function () {

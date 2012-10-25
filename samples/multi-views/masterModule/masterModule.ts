@@ -10,4 +10,5 @@ module masterModule {
 
     export var masterModel = new MasterModel();
     export var masterViewRenderer = new ViewRenderer(masterView, masterModel, masterController);
+
 }

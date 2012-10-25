@@ -17,12 +17,12 @@ var masterModule;
                     totalWin: element.JSON.totalWin
                 });
             });
-            amplify.publish("remote", model.remoteGames);
+            app.localPublish("remote", model.remoteGames);
         });
         app.ws.bind('Sink.Create', function (createdElement) {
             model.guid = createdElement.Key;
         });
-        amplify.subscribe("remote", function (results) {
+        app.localSubscribe("remote", function (results) {
             var html = "";
             results.sort(function (a, b) {
                 return (a.totalSpent - a.totalWin) - (b.totalSpent - b.totalWin);
@@ -45,7 +45,7 @@ var masterModule;
                 $("#addgame").show();
             }, 2000);
         });
-        amplify.subscribe("ticketResult", function () {
+        app.localSubscribe("ticketResult", function () {
             masterModule.refreshTotalResult(model);
             var result = model.totalResult();
             if(result.guid == null) {
