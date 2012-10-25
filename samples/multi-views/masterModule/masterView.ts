@@ -43,7 +43,7 @@ module masterModule {
                 H3("Total results"),
                 BUTTON({ id: "addgame", style: "display:none;" }, "Add game"),
                 DIV(totalResult(model)),
-                H3("Results from all players"),
+                H3("Hi-score list (results from all players)"),
                 DIV({ id: "fromServer" }),
                 DIV({ id: "remoteResults" }, "Communicating with server...")
                 )

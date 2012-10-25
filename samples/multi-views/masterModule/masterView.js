@@ -34,7 +34,7 @@ var masterModule;
         }, "live.xsockets.net")), H3("Total results"), BUTTON({
             id: "addgame",
             style: "display:none;"
-        }, "Add game"), DIV(masterModule.totalResult(model)), H3("Results from all players"), DIV({
+        }, "Add game"), DIV(masterModule.totalResult(model)), H3("Hi-score list (results from all players)"), DIV({
             id: "fromServer"
         }), DIV({
             id: "remoteResults"
