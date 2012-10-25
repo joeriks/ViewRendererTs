@@ -3,7 +3,6 @@
 
 module gameModule {
     export class GameModel {
-
         boughtTickets: number;
         wonMoney: number;
         lastTicketResult: string;
