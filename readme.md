@@ -2,11 +2,16 @@
 
 "I was inspired by the many good javascript frameworks out there so I made my own".
 
-Not really. This is a _very simple_ playful & experimental approach building client side functionality MVC style with typescript. It boils down to the three MVC components:
+Not. This is a _very simple_ playful & experimental approach building client side functionality MVC style with typescript. 
 
-* The model : a TypeScript class or a plain javascript model.
-* The view : a function that returns html.
-* The controller : a controllerbindings-function that adds bindings to the DOM. Can be router events, pubsub publishs, clicks or whatever you like.
+It boils down to the three MVC components:
+
+* The model 
+	A TypeScript class or a plain javascript model.
+* The view
+	Essentially a function that returns html.
+* The controller 
+	The controller is invoked on view render. It hooks upp bindings. Can be user actions, timers, router events, pubsub publishs, clicks or whatever.
 
 The components are tied together with a ViewRenderer class (25 lines of code). It takes the mentioned components as parameters and has a render function which renders the view on a given jQuery element.
 
@@ -23,6 +28,7 @@ To get structure in the application, the components can for example be spread ac
 Check out the samples previews:
 * [Simple views sample](http://htmlpreview.github.com/?https://github.com/joeriks/ViewRendererTs/blob/master/samples/simple-views/default.html)
 * [Multiple views sample](http://htmlpreview.github.com/?https://github.com/joeriks/ViewRendererTs/blob/master/samples/multi-views/default.html)
+	A bit more code. I built it as a lottery game simulator (using swedish lottery "Triss" winning scheme). One master view and one instantiatable "game" view. It's using local pubsub with amplify to communicate between page parts. And it's using websockets library Xsockets to store results and broadcast them to other game players.
 
 ### Simple views:
 
@@ -55,8 +61,7 @@ The masterModule looks like this and shows how the the Module and the View are b
 Next step is to render the view to an element. I do that in my application module:
 
     // setup masterview to use body as container
-    masterModule.masterViewRenderer.$el = $("body");
-    masterModule.masterViewRenderer.render();
+    masterModule.masterViewRenderer.render($("body"));
 
 Note that the class instantiations take place inside the modules, and in the main module (app.ts) I just tell my existing views where they are going to be rendered. That is of course a matter of preference.
 
