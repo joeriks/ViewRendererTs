@@ -42,11 +42,15 @@ module masterModule {
         }
 
         newRemoteResult(remoteResult: IgameResult) {
-            var found = $.grep(this.remoteGames,
-                (item) =>item.guid == remoteResult.guid, false);
-            if (found.length > 0) {
-                found[0] = remoteResult;
-            } else {
+            var found = false;
+            $.each(this.remoteGames, (idx, element) => {
+
+                if (element.guid == remoteResult.guid) {
+                    this.remoteGames[idx] = remoteResult;
+                    found = true;
+                }
+            });
+            if (!found) {
                 this.remoteGames.push(remoteResult);
             }
             app.localPublish("remote", this.remoteGames);
