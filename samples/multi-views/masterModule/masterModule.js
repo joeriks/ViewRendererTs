@@ -1,9 +1,3 @@
-/// <reference path="../ref.ts"/>
-/// <reference path="../gameModule/gameModule.ts"/>
-/// <reference path="../app.ts"/>
-/// <reference path="masterModel.ts"/>
-/// <reference path="masterController.ts"/>
-/// <reference path="masterView.ts"/>
 var masterModule;
 (function (masterModule) {
     masterModule.masterModel = new masterModule.MasterModel();

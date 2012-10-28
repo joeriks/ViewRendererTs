@@ -1,4 +1,3 @@
-/// <reference path="../ref.ts"/>
 var gameModule;
 (function (gameModule) {
     var gameBox = function (contents) {

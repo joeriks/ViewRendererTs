@@ -1,4 +1,3 @@
-/// <reference path="../ref.ts"/>
 var gameModule;
 (function (gameModule) {
     gameModule.gameController = function (model, viewRenderer) {

@@ -1,5 +1,3 @@
-/// <reference path="../ref.ts"/>
-/// <reference path="../app.ts"/>
 var masterModule;
 (function (masterModule) {
     var viewHeader = function (name) {

@@ -1,4 +1,3 @@
-/// <reference path="lotteryClass.ts"/>
 var lotteryModule;
 (function (lotteryModule) {
     lotteryModule.trissLottery = new lotteryModule.Lottery();

@@ -1,4 +1,3 @@
-/// <reference path="../masterModule/masterModule.ts"/>
 var xSocketsModule;
 (function (xSocketsModule) {
     xSocketsModule.enabled = true;

@@ -1,6 +1,3 @@
-/// <reference path="../ref.ts"/>
-/// <reference path="../gameModule/gameModule.ts"/>
-/// <reference path="../app.ts"/>
 var masterModule;
 (function (masterModule) {
     var refreshTotalResult = function (model) {
@@ -80,12 +77,10 @@ var masterModule;
                 xSocketsModule.ws.trigger('result', result);
             }
         });
-        // recreate subviews
         $.each(model.games, function (idx, game) {
             game.render($("<div></div>").appendTo("#leftContent"));
         });
         viewRenderer.$el.find("button").on("click", function () {
-            // create a new game
             var game = new gameModule.GameRenderer();
             game.render($("<div></div>").appendTo("#leftContent"));
             model.games.push(game);

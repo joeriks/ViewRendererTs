@@ -3,10 +3,6 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 }
-/// <reference path="../ref.ts"/>
-/// <reference path="gameModel.ts"/>
-/// <reference path="gameView.ts"/>
-/// <reference path="gameController.ts"/>
 var gameModule;
 (function (gameModule) {
     var GameRenderer = (function (_super) {

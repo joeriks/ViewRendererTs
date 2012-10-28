@@ -1,12 +1,8 @@
-/// <reference path="../ref.ts"/>
-/// <reference path="../gameModule/gameModule.ts"/>
-/// <reference path="../app.ts"/>
 var masterModule;
 (function (masterModule) {
     function GUID() {
         var S4 = function () {
-            return Math.floor(Math.random() * 65536).toString(/* 65536 */
-            16);
+            return Math.floor(Math.random() * 65536).toString(16);
         };
         return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
     }
@@ -19,15 +15,12 @@ var masterModule;
             }
         }
         MasterModel.prototype.newRemoteResult = function (remoteResult) {
-            var _this = this;
-            var found = false;
-            $.each(this.remoteGames, function (idx, element) {
-                if(element.guid == remoteResult.guid) {
-                    _this.remoteGames[idx] = remoteResult;
-                    found = true;
-                }
-            });
-            if(!found) {
+            var found = $.grep(this.remoteGames, function (item) {
+                return item.guid == remoteResult.guid;
+            }, false);
+            if(found.length > 0) {
+                found[0] = remoteResult;
+            } else {
                 this.remoteGames.push(remoteResult);
             }
             app.localPublish("remote", this.remoteGames);
